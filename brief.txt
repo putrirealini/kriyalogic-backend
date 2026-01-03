@@ -1,0 +1,34 @@
+1. User Authentication (Keamanan & Akses)
+
+
+Sistem pakai Role-based: Ada Admin dan Cashier (Kasir).
+
+
+Registrasi: Kasir tidak bisa daftar sendiri. Akun kasir hanya bisa dibuatkan oleh Admin.
+
+
+Login/Logout: Standar pakai email & password.
+
+
+Change Password: Admin dan Kasir bisa ubah password mereka sendiri setelah login.
+
+
+2. Artisan Management (Manajemen Pengrajin)
+
+
+Admin bisa input profil Pengrajin (Artisan).
+
+
+Penting: Di sini Admin bisa atur commission rate (persentase komisi) yang beda-beda tiap pengrajin.
+
+
+Sistem harus bisa tracking barang dagangan ini punya pengrajin siapa (buat hitung bagi hasil nanti).
+
+
+3. Tour Guide Management
+
+
+Admin bisa nambah data dan kelola data Tour Guide. sama kayak artisan management
+
+
+Tujuannya buat dasar perhitungan komisi per transaksi kalau ada guide yang bawa tamu.
