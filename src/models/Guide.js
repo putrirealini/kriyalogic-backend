@@ -20,6 +20,11 @@ const guideSchema = new mongoose.Schema({
     required: [true, 'Please add a contact number'],
     trim: true
   },
+  status: {
+    type: String,
+    enum: ['active', 'inactive'],
+    default: 'active'
+  },
   createdAt: {
     type: Date,
     default: Date.now

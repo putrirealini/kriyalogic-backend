@@ -25,6 +25,11 @@ const artisanSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an address']
   },
+  status: {
+    type: String,
+    enum: ['active', 'inactive'],
+    default: 'active'
+  },
   createdAt: {
     type: Date,
     default: Date.now

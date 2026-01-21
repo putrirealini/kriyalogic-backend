@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 // @access  Private/Admin
 exports.createArtisan = async (req, res) => {
   try {
-    const { fullName, phoneNumber, commissionRate, bankAccount, address } = req.body;
+    const { fullName, phoneNumber, commissionRate, bankAccount, address, status } = req.body;
 
     // Validate inputs
     if (!fullName || !phoneNumber || !commissionRate || !bankAccount || !address) {
@@ -30,7 +30,8 @@ exports.createArtisan = async (req, res) => {
       phoneNumber,
       commissionRate,
       bankAccount,
-      address
+      address,
+      status: 'active'
     });
 
     res.status(201).json({
@@ -68,7 +69,7 @@ exports.updateArtisan = async (req, res) => {
       });
     }
 
-    const { fullName, phoneNumber, commissionRate, bankAccount, address } = req.body;
+    const { fullName, phoneNumber, commissionRate, bankAccount, address, status } = req.body;
 
     // Check if phone number is being updated and if it's already taken
     if (phoneNumber && phoneNumber !== artisan.phoneNumber) {
@@ -86,6 +87,7 @@ exports.updateArtisan = async (req, res) => {
     if (commissionRate) artisan.commissionRate = commissionRate;
     if (bankAccount) artisan.bankAccount = bankAccount;
     if (address) artisan.address = address;
+    if (status) artisan.status = status;
 
     await artisan.save();
 

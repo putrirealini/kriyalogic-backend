@@ -20,7 +20,8 @@ exports.createGuide = async (req, res) => {
       guideName,
       agency,
       commissionRate,
-      contact
+      contact,
+      status: 'active'
     });
 
     res.status(201).json({
@@ -58,12 +59,13 @@ exports.updateGuide = async (req, res) => {
       });
     }
 
-    const { guideName, agency, commissionRate, contact } = req.body;
+    const { guideName, agency, commissionRate, contact, status } = req.body;
 
     if (guideName) guide.guideName = guideName;
     if (agency) guide.agency = agency;
     if (commissionRate) guide.commissionRate = commissionRate;
     if (contact) guide.contact = contact;
+    if (status) guide.status = status;
 
     await guide.save();
 
