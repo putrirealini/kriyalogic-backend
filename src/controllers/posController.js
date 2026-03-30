@@ -39,7 +39,6 @@ exports.getProducts = asyncHandler(async (req, res) => {
     normalizedCategory.toLowerCase() !== 'all';
 
   if (shouldFilterCategory) {
-    console.log('Filtering by category:', normalizedCategory);
     const masterProducts = await MasterProduct.find({
       productName: normalizedCategory
     }).select('_id');
