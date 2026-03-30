@@ -14,6 +14,8 @@ exports.getCategories = async (req, res) => {
       };
     }
 
+    query.status = 'active';
+
     const [masterProducts, productItemCounts] = await Promise.all([
       MasterProduct.find(query)
         .select('_id categoryName productName logo status createdAt updatedAt')
@@ -22,6 +24,11 @@ exports.getCategories = async (req, res) => {
 
       ProductItem.aggregate([
         {
+          $match: {
+            status: 'available'
+          }
+        },
+        {
           $group: {
             _id: '$masterProductId',
             productCount: { $sum: 1 }
@@ -29,7 +36,7 @@ exports.getCategories = async (req, res) => {
         }
       ])
     ]);
-
+    
     const productItemCountMap = new Map(
       productItemCounts.map((item) => [
         String(item._id),

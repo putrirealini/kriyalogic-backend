@@ -30,10 +30,29 @@ exports.getParentProducts = async (req, res) => {
   try {
     const parentProducts = await MasterProduct.find().sort({ createdAt: -1 });
 
+    const parentProductsWithCounts = await Promise.all(
+      parentProducts.map(async (parent) => {
+        const totalChildItems = await ProductItem.countDocuments({
+          masterProductId: parent._id
+        });
+
+        const availableStock = await ProductItem.countDocuments({
+          masterProductId: parent._id,
+          status: 'available'
+        });
+
+        return {
+          ...parent.toObject(),
+          totalChildItems,
+          availableStock
+        };
+      })
+    );
+
     return res.status(200).json({
       success: true,
-      count: parentProducts.length,
-      data: parentProducts
+      count: parentProductsWithCounts.length,
+      data: parentProductsWithCounts
     });
   } catch (error) {
     console.error(error);

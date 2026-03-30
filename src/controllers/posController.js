@@ -28,6 +28,8 @@ exports.getProducts = asyncHandler(async (req, res) => {
     ];
   }
 
+  query.status = 'available';
+
   const normalizedCategory = category !== undefined && category !== null
     ? String(category).trim()
     : '';
@@ -70,8 +72,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
 
 exports.getTourGuides = asyncHandler(async (req, res) => {
   try {
-      const guides = await Guide.find();
-  
+      const guides = await Guide.find({ status: 'active' });
       res.status(200).json({
         success: true,
         count: guides.length,

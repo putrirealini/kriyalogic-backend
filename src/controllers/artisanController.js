@@ -150,7 +150,7 @@ exports.deleteArtisan = async (req, res) => {
 // @access  Private/Admin
 exports.getArtisans = async (req, res) => {
   try {
-    const artisans = await Artisan.find().lean();
+    const artisans = await Artisan.find({status: 'active'}).lean();
 
     if (!artisans.length) {
       return res.status(200).json({
@@ -311,7 +311,7 @@ exports.getArtisanCommissions = async (req, res) => {
       ...item,
       productItem: item.productItemId || null,
       productPhoto: item.productPhoto || item.productItemId?.productPhoto || '',
-      itemName: item.itemName || item.productItemId?.itemName || '',
+      itemName: item.productItemId?.itemName || '',
       childCode: item.childCode || item.productItemId?.childCode || '',
       sellingPrice: item.sellingPrice || item.productItemId?.sellingPrice || 0,
       statusProduct: item.productItemId?.status || null
@@ -346,6 +346,58 @@ exports.markAllPaid = async (req, res) => {
   );
 
   res.json({ success: true });
+};
+
+exports.markSelectedPaid = async (req, res) => {
+  try {
+    const { artisanId, commissionIds = [] } = req.body;
+
+    if (!artisanId) {
+      return res.status(422).json({
+        success: false,
+        message: 'artisanId is required'
+      });
+    }
+
+    if (!Array.isArray(commissionIds) || commissionIds.length === 0) {
+      return res.status(422).json({
+        success: false,
+        message: 'commissionIds is required'
+      });
+    }
+
+    const result = await ArtisanCommission.updateMany(
+      {
+        _id: { $in: commissionIds },
+        artisanId,
+        status: 'unpaid'
+      },
+      {
+        $set: {
+          status: 'paid',
+          paidAt: new Date(),
+          paidBy: req.user?._id || null
+        }
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Selected commissions marked as paid',
+      data: {
+        matchedCount: result.matchedCount ?? result.n,
+        modifiedCount: result.modifiedCount ?? result.nModified
+      }
+    });
+  } catch (error) {
+    console.error('markSelectedPaid error:', error);
+
+    return res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message
+    });
+  }
 };
 
 exports.exportArtisanCommissionsExcel = async (req, res) => {

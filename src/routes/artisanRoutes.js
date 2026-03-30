@@ -1,5 +1,5 @@
 const express = require('express');
-const { createArtisan, getArtisans, updateArtisan, deleteArtisan, getArtisanCommissions, markAllPaid, exportArtisanCommissionsExcel } = require('../controllers/artisanController');
+const { createArtisan, getArtisans, updateArtisan, deleteArtisan, getArtisanCommissions, markAllPaid, exportArtisanCommissionsExcel, markSelectedPaid } = require('../controllers/artisanController');
 const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
@@ -13,6 +13,7 @@ router.get('/', getArtisans);
 router.get('/:id/commissions', getArtisanCommissions);
 router.put('/:id', updateArtisan);
 router.post('/:id/mark-all-paid', markAllPaid);
+router.post('/mark-selected-paid', markSelectedPaid);
 router.delete('/:id', deleteArtisan);
 router.get('/:id/commissions/export-excel', exportArtisanCommissionsExcel);
 
