@@ -165,4 +165,10 @@ const posOrderSchema = new mongoose.Schema(
   }
 );
 
+posOrderSchema.index({ paidAt: -1, createdAt: -1 });
+posOrderSchema.index({ receiptNumber: 1 });
+posOrderSchema.index({ customerName: 1 });
+posOrderSchema.index({ cashierName: 1 });
+posOrderSchema.index({ paymentMethod: 1 });
+
 module.exports = mongoose.model('PosOrder', posOrderSchema);

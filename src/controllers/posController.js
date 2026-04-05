@@ -365,11 +365,10 @@ exports.getReceiptHistories = asyncHandler(async (req, res) => {
   const perPage = Math.max(parseInt(limit, 10) || 10, 1);
   const skip = (currentPage - 1) * perPage;
 
+  const keyword = String(search).trim();
   const query = {};
 
-  if (String(search).trim()) {
-    const keyword = String(search).trim();
-
+  if (keyword) {
     query.$or = [
       { receiptNumber: { $regex: keyword, $options: 'i' } },
       { customerName: { $regex: keyword, $options: 'i' } },
@@ -380,9 +379,31 @@ exports.getReceiptHistories = asyncHandler(async (req, res) => {
 
   const [orders, total] = await Promise.all([
     PosOrder.find(query)
+      .select({
+        receiptNumber: 1,
+        customerName: 1,
+        customerPhone: 1,
+        cashierName: 1,
+        guideName: 1,
+        guideCommissionAmount: 1,
+        subtotal: 1,
+        taxPercent: 1,
+        taxAmount: 1,
+        deliveryFee: 1,
+        discount: 1,
+        totalAmount: 1,
+        paymentMethod: 1,
+        amountPaid: 1,
+        changeAmount: 1,
+        status: 1,
+        paidAt: 1,
+        createdAt: 1,
+        items: 1
+      })
       .sort({ paidAt: -1, createdAt: -1 })
       .skip(skip)
       .limit(perPage)
+      .allowDiskUse(true)
       .lean(),
     PosOrder.countDocuments(query)
   ]);
@@ -401,7 +422,7 @@ exports.getReceiptHistories = asyncHandler(async (req, res) => {
     deliveryFee: Number(order.deliveryFee || 0),
     discount: Number(order.discount || 0),
     totalAmount: Number(order.totalAmount || 0),
-    paymentMethod: order.paymentMethod,
+    paymentMethod: order.paymentMethod || '-',
     amountPaid: Number(order.amountPaid || 0),
     changeAmount: Number(order.changeAmount || 0),
     status: order.status || 'paid',
