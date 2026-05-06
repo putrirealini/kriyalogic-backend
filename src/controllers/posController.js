@@ -99,7 +99,8 @@ exports.payNow = asyncHandler(async (req, res) => {
       guideId = null,
       deliveryFee = 0,
       discount = 0,
-      amountPaid = 0
+      amountPaid = 0,
+      delivery = null
     } = req.body;
 
     if (!['cash', 'card', 'qris'].includes(paymentMethod)) {
@@ -118,22 +119,77 @@ exports.payNow = asyncHandler(async (req, res) => {
 
     const uniqueItemIds = [...new Set(itemIds.map((id) => String(id)))];
 
-    const numericDeliveryFee = Number(deliveryFee || 0);
     const numericDiscount = Number(discount || 0);
     const numericAmountPaid = Number(amountPaid || 0);
-
-    if (Number.isNaN(numericDeliveryFee) || numericDeliveryFee < 0) {
-      return res.status(422).json({
-        success: false,
-        message: 'Invalid delivery fee'
-      });
-    }
 
     if (Number.isNaN(numericDiscount) || numericDiscount < 0) {
       return res.status(422).json({
         success: false,
         message: 'Invalid discount'
       });
+    }
+
+    let normalizedDelivery = null;
+    let numericDeliveryFee = Number(deliveryFee || 0);
+
+    if (delivery) {
+      const packageName = String(delivery.packageName || '').trim();
+      const courierPrice = Number(delivery.courierPrice || 0);
+      const storeProfit = Number(delivery.storeProfit || 0);
+      const totalPrice = Number(delivery.totalPrice || 0);
+
+      if (!packageName) {
+        return res.status(422).json({
+          success: false,
+          message: 'Delivery package name is required'
+        });
+      }
+
+      if (Number.isNaN(courierPrice) || courierPrice < 0) {
+        return res.status(422).json({
+          success: false,
+          message: 'Invalid delivery courier price'
+        });
+      }
+
+      if (Number.isNaN(storeProfit) || storeProfit < 0) {
+        return res.status(422).json({
+          success: false,
+          message: 'Invalid delivery store profit'
+        });
+      }
+
+      if (Number.isNaN(totalPrice) || totalPrice < 0) {
+        return res.status(422).json({
+          success: false,
+          message: 'Invalid delivery total price'
+        });
+      }
+
+      const expectedTotal = courierPrice + storeProfit;
+
+      if (Math.abs(totalPrice - expectedTotal) > 0.01) {
+        return res.status(422).json({
+          success: false,
+          message: 'Delivery total price is invalid'
+        });
+      }
+
+      numericDeliveryFee = totalPrice;
+
+      normalizedDelivery = {
+        packageName,
+        courierPrice,
+        storeProfit,
+        totalPrice
+      };
+    } else {
+      if (Number.isNaN(numericDeliveryFee) || numericDeliveryFee < 0) {
+        return res.status(422).json({
+          success: false,
+          message: 'Invalid delivery fee'
+        });
+      }
     }
 
     await session.withTransaction(async () => {
@@ -251,6 +307,7 @@ exports.payNow = asyncHandler(async (req, res) => {
             taxPercent: TAX_PERCENT,
             taxAmount,
             deliveryFee: numericDeliveryFee,
+            delivery: normalizedDelivery,
             discount: numericDiscount,
             totalAmount,
             paymentMethod,
@@ -321,6 +378,7 @@ exports.payNow = asyncHandler(async (req, res) => {
           taxPercent: order.taxPercent,
           taxAmount: order.taxAmount,
           deliveryFee: order.deliveryFee,
+          delivery: order.delivery || null,
           discount: order.discount,
           totalAmount: order.totalAmount,
           paymentMethod: order.paymentMethod,

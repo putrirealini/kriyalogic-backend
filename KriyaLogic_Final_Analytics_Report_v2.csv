@@ -1,0 +1,135 @@
+Tanggal,Nama Patung,Nama Artisan,Tour Guide,Jumlah, Selling Price per Unit (Rp) , Total Sales (Rp) , Cost Price per Unit (Rp) , Total Cost Price (Rp) ,Artisan Commission (%), Artisan Commission (Rp) ,Guide Commission (%), Guide Commission (Rp) , Net Profit (Rp) ,Metode Pembayaran
+9/1/2025,Patung Naga,I Ketut Ardana,Ketut Yasa Pramana,1," Rp1,900,000 "," Rp1,900,000 "," Rp1,021,000 "," Rp1,021,000 ",8.5," Rp161,500 ",1.9," Rp36,100 "," Rp681,400 ",Cash
+9/2/2025,Patung Garuda Wisnu,I Nyoman Sudiarta,Kadek Arya Wibawa,3," Rp950,000 "," Rp2,850,000 "," Rp565,000 "," Rp1,695,000 ",5," Rp142,500 ",1.1," Rp31,350 "," Rp981,150 ",QRIS
+9/3/2025,Patung Buddha,Kadek Agus Wijaya,Putu Gede Mahardika,2," Rp4,200,000 "," Rp8,400,000 "," Rp2,407,000 "," Rp4,814,000 ",5.8," Rp487,200 ",1.9," Rp159,600 "," Rp2,939,200 ",QRIS
+9/4/2025,Patung Rangda,I Gusti Ngurah Artawan,Made Surya Dharma,1," Rp950,000 "," Rp950,000 "," Rp532,000 "," Rp532,000 ",5.3," Rp50,350 ",1.6," Rp15,200 "," Rp352,450 ",Debit
+9/5/2025,Patung Abstrak Modern,I Ketut Ardana,Komang Adi Putra,3," Rp1,800,000 "," Rp5,400,000 "," Rp928,000 "," Rp2,784,000 ",8.5," Rp459,000 ",1.9," Rp102,600 "," Rp2,054,400 ",Cash
+9/6/2025,Patung Kepala Moai,I Made Sudarma,Nyoman Budi Santosa,2," Rp2,200,000 "," Rp4,400,000 "," Rp1,134,000 "," Rp2,268,000 ",6.1," Rp268,400 ",1.4," Rp61,600 "," Rp1,802,000 ",Cash
+9/7/2025,Patung Penyu,Ni Luh Putu Ariani,Made Surya Dharma,3," Rp3,500,000 "," Rp10,500,000 "," Rp1,770,000 "," Rp5,310,000 ",7.7," Rp808,500 ",1.6," Rp168,000 "," Rp4,213,500 ",Credit Card
+9/8/2025,Patung Kucing,I Made Sudarma,Putu Gede Mahardika,3," Rp4,200,000 "," Rp12,600,000 "," Rp2,464,000 "," Rp7,392,000 ",6.1," Rp768,600 ",1.9," Rp239,400 "," Rp4,200,000 ",Credit Card
+9/9/2025,Patung Buddha,Ni Luh Putu Ariani,Dewa Gede Saputra,3," Rp2,700,000 "," Rp8,100,000 "," Rp1,512,000 "," Rp4,536,000 ",7.7," Rp623,700 ",1.2," Rp97,200 "," Rp2,843,100 ",Credit Card
+9/10/2025,Patung Abstrak Modern,I Made Sudarma,Bagus Rai Pratama,3," Rp3,000,000 "," Rp9,000,000 "," Rp1,712,000 "," Rp5,136,000 ",6.1," Rp549,000 ",1.2," Rp108,000 "," Rp3,207,000 ",Cash
+9/11/2025,Patung Harimau,Ni Luh Putu Ariani,Made Surya Dharma,3," Rp4,200,000 "," Rp12,600,000 "," Rp2,109,000 "," Rp6,327,000 ",7.7," Rp970,200 ",1.6," Rp201,600 "," Rp5,101,200 ",Credit Card
+9/12/2025,Patung Malaikat,I Ketut Ardana,Bagus Rai Pratama,1," Rp2,200,000 "," Rp2,200,000 "," Rp1,313,000 "," Rp1,313,000 ",8.5," Rp187,000 ",1.2," Rp26,400 "," Rp673,600 ",Credit Card
+9/13/2025,Patung Burung Garuda,I Wayan Suartana,Made Surya Dharma,2," Rp4,200,000 "," Rp8,400,000 "," Rp2,450,000 "," Rp4,900,000 ",5.6," Rp470,400 ",1.6," Rp134,400 "," Rp2,895,200 ",Credit Card
+9/14/2025,Patung Kuda,I Made Sudarma,Bagus Rai Pratama,2," Rp1,600,000 "," Rp3,200,000 "," Rp834,000 "," Rp1,668,000 ",6.1," Rp195,200 ",1.2," Rp38,400 "," Rp1,298,400 ",Cash
+9/15/2025,Patung Ikan Koi,I Ketut Ardana,Ketut Yasa Pramana,3," Rp1,600,000 "," Rp4,800,000 "," Rp829,000 "," Rp2,487,000 ",8.5," Rp408,000 ",1.9," Rp91,200 "," Rp1,813,800 ",Credit Card
+9/16/2025,Patung Kucing,Ni Luh Putu Ariani,Nyoman Budi Santosa,1," Rp1,600,000 "," Rp1,600,000 "," Rp829,000 "," Rp829,000 ",7.7," Rp123,200 ",1.4," Rp22,400 "," Rp625,400 ",Credit Card
+9/17/2025,Patung Garuda Wisnu,I Wayan Suartana,Made Surya Dharma,3," Rp1,250,000 "," Rp3,750,000 "," Rp663,000 "," Rp1,989,000 ",5.6," Rp210,000 ",1.6," Rp60,000 "," Rp1,491,000 ",Debit
+9/18/2025,Patung Gajah,I Nyoman Sudiarta,Dewa Gede Saputra,3," Rp1,250,000 "," Rp3,750,000 "," Rp691,000 "," Rp2,073,000 ",5," Rp187,500 ",1.2," Rp45,000 "," Rp1,444,500 ",Cash
+9/19/2025,Patung Barong,Ni Made Suryani,Nyoman Budi Santosa,1," Rp2,200,000 "," Rp2,200,000 "," Rp1,195,000 "," Rp1,195,000 ",6.2," Rp136,400 ",1.4," Rp30,800 "," Rp837,800 ",QRIS
+9/20/2025,Patung Buddha,I Wayan Suartana,Kadek Arya Wibawa,3," Rp2,100,000 "," Rp6,300,000 "," Rp1,111,000 "," Rp3,333,000 ",5.6," Rp352,800 ",1.1," Rp69,300 "," Rp2,544,900 ",Credit Card
+9/21/2025,Patung Ikan Koi,Ni Made Suryani,Komang Adi Putra,3," Rp1,900,000 "," Rp5,700,000 "," Rp1,066,000 "," Rp3,198,000 ",6.2," Rp353,400 ",1.9," Rp108,300 "," Rp2,040,300 ",QRIS
+9/22/2025,Patung Harimau,I Wayan Suartana,Putu Gede Mahardika,3," Rp1,800,000 "," Rp5,400,000 "," Rp925,000 "," Rp2,775,000 ",5.6," Rp302,400 ",1.9," Rp102,600 "," Rp2,220,000 ",Cash
+9/23/2025,Patung Malaikat,I Ketut Ardana,Komang Adi Putra,2," Rp4,200,000 "," Rp8,400,000 "," Rp2,223,000 "," Rp4,446,000 ",8.5," Rp714,000 ",1.9," Rp159,600 "," Rp3,080,400 ",Cash
+9/24/2025,Patung Barong,I Wayan Suartana,Dewa Gede Saputra,3," Rp3,800,000 "," Rp11,400,000 "," Rp2,039,000 "," Rp6,117,000 ",5.6," Rp638,400 ",1.2," Rp136,800 "," Rp4,507,800 ",Cash
+9/25/2025,Patung Singa,I Gusti Ngurah Artawan,Made Surya Dharma,3," Rp2,100,000 "," Rp6,300,000 "," Rp1,146,000 "," Rp3,438,000 ",5.3," Rp333,900 ",1.6," Rp100,800 "," Rp2,427,300 ",Credit Card
+9/26/2025,Patung Dewi Saraswati,I Nyoman Sudiarta,Kadek Arya Wibawa,2," Rp2,200,000 "," Rp4,400,000 "," Rp1,273,000 "," Rp2,546,000 ",5," Rp220,000 ",1.1," Rp48,400 "," Rp1,585,600 ",Credit Card
+9/27/2025,Patung Elang,Ni Made Suryani,Bagus Rai Pratama,2," Rp3,000,000 "," Rp6,000,000 "," Rp1,560,000 "," Rp3,120,000 ",6.2," Rp372,000 ",1.2," Rp72,000 "," Rp2,436,000 ",Cash
+9/28/2025,Patung Dwarapala,I Ketut Ardana,Made Surya Dharma,1," Rp3,000,000 "," Rp3,000,000 "," Rp1,654,000 "," Rp1,654,000 ",8.5," Rp255,000 ",1.6," Rp48,000 "," Rp1,043,000 ",Debit
+9/29/2025,Patung Abstrak Modern,Ni Luh Putu Ariani,Ayu Cintya Dewi,1," Rp2,100,000 "," Rp2,100,000 "," Rp1,174,000 "," Rp1,174,000 ",7.7," Rp161,700 ",1.6," Rp33,600 "," Rp730,700 ",QRIS
+9/30/2025,Patung Barong,I Nyoman Sudiarta,Made Surya Dharma,3," Rp1,900,000 "," Rp5,700,000 "," Rp959,000 "," Rp2,877,000 ",5," Rp285,000 ",1.6," Rp91,200 "," Rp2,446,800 ",Credit Card
+10/1/2025,Patung Kepala Moai,I Made Sudarma,Ketut Yasa Pramana,3," Rp2,700,000 "," Rp8,100,000 "," Rp1,514,000 "," Rp4,542,000 ",6.1," Rp494,100 ",1.9," Rp153,900 "," Rp2,910,000 ",Cash
+10/2/2025,Patung Kuda,Ni Made Suryani,Komang Adi Putra,1," Rp1,900,000 "," Rp1,900,000 "," Rp982,000 "," Rp982,000 ",6.2," Rp117,800 ",1.9," Rp36,100 "," Rp764,100 ",Credit Card
+10/3/2025,Patung Dwarapala,Kadek Agus Wijaya,Ketut Yasa Pramana,1," Rp1,250,000 "," Rp1,250,000 "," Rp633,000 "," Rp633,000 ",5.8," Rp72,500 ",1.9," Rp23,750 "," Rp520,750 ",Credit Card
+10/4/2025,Patung Ganesha,I Nyoman Sudiarta,Putu Gede Mahardika,2," Rp3,800,000 "," Rp7,600,000 "," Rp2,261,000 "," Rp4,522,000 ",5," Rp380,000 ",1.9," Rp144,400 "," Rp2,553,600 ",Cash
+10/5/2025,Patung Harimau,I Ketut Ardana,Komang Adi Putra,3," Rp1,250,000 "," Rp3,750,000 "," Rp746,000 "," Rp2,238,000 ",8.5," Rp318,750 ",1.9," Rp71,250 "," Rp1,122,000 ",Cash
+10/6/2025,Patung Lumba-Lumba,I Made Sudarma,Kadek Arya Wibawa,3," Rp1,250,000 "," Rp3,750,000 "," Rp726,000 "," Rp2,178,000 ",6.1," Rp228,750 ",1.1," Rp41,250 "," Rp1,302,000 ",Credit Card
+10/7/2025,Patung Harimau,I Nyoman Sudiarta,Komang Adi Putra,2," Rp3,500,000 "," Rp7,000,000 "," Rp1,857,000 "," Rp3,714,000 ",5," Rp350,000 ",1.9," Rp133,000 "," Rp2,803,000 ",Cash
+10/8/2025,Patung Anjing,Ni Made Suryani,Nyoman Budi Santosa,3," Rp4,200,000 "," Rp12,600,000 "," Rp2,141,000 "," Rp6,423,000 ",6.2," Rp781,200 ",1.4," Rp176,400 "," Rp5,219,400 ",Credit Card
+10/9/2025,Patung Barong,I Gusti Ngurah Artawan,Dewa Gede Saputra,1," Rp3,500,000 "," Rp3,500,000 "," Rp1,989,000 "," Rp1,989,000 ",5.3," Rp185,500 ",1.2," Rp42,000 "," Rp1,283,500 ",Credit Card
+10/10/2025,Patung Dwarapala,Kadek Agus Wijaya,Nyoman Budi Santosa,1," Rp1,900,000 "," Rp1,900,000 "," Rp1,034,000 "," Rp1,034,000 ",5.8," Rp110,200 ",1.4," Rp26,600 "," Rp729,200 ",Credit Card
+10/11/2025,Patung Anjing,Ni Made Suryani,Komang Adi Putra,2," Rp2,200,000 "," Rp4,400,000 "," Rp1,127,000 "," Rp2,254,000 ",6.2," Rp272,800 ",1.9," Rp83,600 "," Rp1,789,600 ",Cash
+10/12/2025,Patung Garuda Wisnu,I Wayan Suartana,Nyoman Budi Santosa,2," Rp1,900,000 "," Rp3,800,000 "," Rp1,044,000 "," Rp2,088,000 ",5.6," Rp212,800 ",1.4," Rp53,200 "," Rp1,446,000 ",Cash
+10/13/2025,Patung Buddha,I Gusti Ngurah Artawan,Komang Adi Putra,3," Rp3,500,000 "," Rp10,500,000 "," Rp1,762,000 "," Rp5,286,000 ",5.3," Rp556,500 ",1.9," Rp199,500 "," Rp4,458,000 ",Cash
+10/14/2025,Patung Singa,I Made Sudarma,Bagus Rai Pratama,1," Rp4,200,000 "," Rp4,200,000 "," Rp2,482,000 "," Rp2,482,000 ",6.1," Rp256,200 ",1.2," Rp50,400 "," Rp1,411,400 ",Cash
+10/15/2025,Patung Arjuna,I Nyoman Sudiarta,Ketut Yasa Pramana,1," Rp1,900,000 "," Rp1,900,000 "," Rp999,000 "," Rp999,000 ",5," Rp95,000 ",1.9," Rp36,100 "," Rp769,900 ",Cash
+10/16/2025,Patung Hanoman,Kadek Agus Wijaya,Nyoman Budi Santosa,2," Rp2,700,000 "," Rp5,400,000 "," Rp1,529,000 "," Rp3,058,000 ",5.8," Rp313,200 ",1.4," Rp75,600 "," Rp1,953,200 ",Cash
+10/17/2025,Patung Arjuna,Ni Made Suryani,Ayu Cintya Dewi,1," Rp3,800,000 "," Rp3,800,000 "," Rp2,018,000 "," Rp2,018,000 ",6.2," Rp235,600 ",1.6," Rp60,800 "," Rp1,485,600 ",Credit Card
+10/18/2025,Patung Harimau,I Made Sudarma,Komang Adi Putra,1," Rp4,200,000 "," Rp4,200,000 "," Rp2,318,000 "," Rp2,318,000 ",6.1," Rp256,200 ",1.9," Rp79,800 "," Rp1,546,000 ",Credit Card
+10/19/2025,Patung Lumba-Lumba,I Ketut Ardana,Made Surya Dharma,3," Rp2,700,000 "," Rp8,100,000 "," Rp1,498,000 "," Rp4,494,000 ",8.5," Rp688,500 ",1.6," Rp129,600 "," Rp2,787,900 ",Cash
+10/20/2025,Patung Dwarapala,I Nyoman Sudiarta,Kadek Arya Wibawa,2," Rp1,900,000 "," Rp3,800,000 "," Rp985,000 "," Rp1,970,000 ",5," Rp190,000 ",1.1," Rp41,800 "," Rp1,598,200 ",Cash
+10/21/2025,Patung Dewi Saraswati,Ni Luh Putu Ariani,Nyoman Budi Santosa,1," Rp3,000,000 "," Rp3,000,000 "," Rp1,791,000 "," Rp1,791,000 ",7.7," Rp231,000 ",1.4," Rp42,000 "," Rp936,000 ",Debit
+10/22/2025,Patung Elang,I Nyoman Sudiarta,Dewa Gede Saputra,2," Rp2,100,000 "," Rp4,200,000 "," Rp1,213,000 "," Rp2,426,000 ",5," Rp210,000 ",1.2," Rp50,400 "," Rp1,513,600 ",Cash
+10/23/2025,Patung Hanoman,I Ketut Ardana,Ayu Cintya Dewi,1," Rp2,700,000 "," Rp2,700,000 "," Rp1,604,000 "," Rp1,604,000 ",8.5," Rp229,500 ",1.6," Rp43,200 "," Rp823,300 ",Cash
+10/24/2025,Patung Kuda,I Nyoman Sudiarta,Dewa Gede Saputra,2," Rp1,900,000 "," Rp3,800,000 "," Rp1,120,000 "," Rp2,240,000 ",5," Rp190,000 ",1.2," Rp45,600 "," Rp1,324,400 ",Cash
+10/25/2025,Patung Malaikat,Ni Luh Putu Ariani,Putu Gede Mahardika,1," Rp4,200,000 "," Rp4,200,000 "," Rp2,351,000 "," Rp2,351,000 ",7.7," Rp323,400 ",1.9," Rp79,800 "," Rp1,445,800 ",Cash
+10/26/2025,Patung Barong,I Ketut Ardana,Kadek Arya Wibawa,1," Rp1,250,000 "," Rp1,250,000 "," Rp740,000 "," Rp740,000 ",8.5," Rp106,250 ",1.1," Rp13,750 "," Rp390,000 ",Credit Card
+10/27/2025,Patung Kucing,Kadek Agus Wijaya,Ayu Cintya Dewi,1," Rp2,100,000 "," Rp2,100,000 "," Rp1,069,000 "," Rp1,069,000 ",5.8," Rp121,800 ",1.6," Rp33,600 "," Rp875,600 ",Cash
+10/28/2025,Patung Naga,I Ketut Ardana,Nyoman Budi Santosa,2," Rp1,600,000 "," Rp3,200,000 "," Rp831,000 "," Rp1,662,000 ",8.5," Rp272,000 ",1.4," Rp44,800 "," Rp1,221,200 ",Credit Card
+10/29/2025,Patung Lumba-Lumba,Ni Luh Putu Ariani,Made Surya Dharma,1," Rp950,000 "," Rp950,000 "," Rp479,000 "," Rp479,000 ",7.7," Rp73,150 ",1.6," Rp15,200 "," Rp382,650 ",Credit Card
+10/30/2025,Patung Abstrak Modern,Kadek Agus Wijaya,Putu Gede Mahardika,3," Rp2,200,000 "," Rp6,600,000 "," Rp1,172,000 "," Rp3,516,000 ",5.8," Rp382,800 ",1.9," Rp125,400 "," Rp2,575,800 ",Cash
+10/31/2025,Patung Lumba-Lumba,Ni Made Suryani,Ayu Cintya Dewi,1," Rp2,200,000 "," Rp2,200,000 "," Rp1,186,000 "," Rp1,186,000 ",6.2," Rp136,400 ",1.6," Rp35,200 "," Rp842,400 ",Cash
+11/1/2025,Patung Burung Garuda,I Wayan Suartana,Putu Gede Mahardika,2," Rp2,100,000 "," Rp4,200,000 "," Rp1,107,000 "," Rp2,214,000 ",5.6," Rp235,200 ",1.9," Rp79,800 "," Rp1,671,000 ",Debit
+11/2/2025,Patung Anjing,Kadek Agus Wijaya,Ayu Cintya Dewi,3," Rp3,000,000 "," Rp9,000,000 "," Rp1,749,000 "," Rp5,247,000 ",5.8," Rp522,000 ",1.6," Rp144,000 "," Rp3,087,000 ",Cash
+11/3/2025,Patung Ikan Koi,I Ketut Ardana,Ketut Yasa Pramana,1," Rp2,700,000 "," Rp2,700,000 "," Rp1,446,000 "," Rp1,446,000 ",8.5," Rp229,500 ",1.9," Rp51,300 "," Rp973,200 ",Credit Card
+11/4/2025,Patung Lumba-Lumba,Ni Luh Putu Ariani,Ayu Cintya Dewi,3," Rp2,700,000 "," Rp8,100,000 "," Rp1,426,000 "," Rp4,278,000 ",7.7," Rp623,700 ",1.6," Rp129,600 "," Rp3,068,700 ",Cash
+11/5/2025,Patung Gajah,I Gusti Ngurah Artawan,Kadek Arya Wibawa,3," Rp950,000 "," Rp2,850,000 "," Rp527,000 "," Rp1,581,000 ",5.3," Rp151,050 ",1.1, 31350.000000000004 ," Rp1,086,600 ",Credit Card
+11/6/2025,Patung Naga,Ni Made Suryani,Ketut Yasa Pramana,3," Rp1,900,000 "," Rp5,700,000 "," Rp977,000 "," Rp2,931,000 ",6.2," Rp353,400 ",1.9," Rp108,300 "," Rp2,307,300 ",Cash
+11/7/2025,Patung Barong,Kadek Agus Wijaya,Nyoman Budi Santosa,3," Rp950,000 "," Rp2,850,000 "," Rp551,000 "," Rp1,653,000 ",5.8," Rp165,300 ",1.4, 39899.99999999999 ," Rp991,800 ",Debit
+11/8/2025,Patung Malaikat,I Wayan Suartana,Bagus Rai Pratama,3," Rp2,100,000 "," Rp6,300,000 "," Rp1,066,000 "," Rp3,198,000 ",5.6," Rp352,800 ",1.2," Rp75,600 "," Rp2,673,600 ",Credit Card
+11/9/2025,Patung Ikan Koi,Ni Made Suryani,Nyoman Budi Santosa,3," Rp1,600,000 "," Rp4,800,000 "," Rp958,000 "," Rp2,874,000 ",6.2," Rp297,600 ",1.4," Rp67,200 "," Rp1,561,200 ",Cash
+11/10/2025,Patung Abstrak Modern,I Wayan Suartana,Dewa Gede Saputra,1," Rp3,500,000 "," Rp3,500,000 "," Rp2,020,000 "," Rp2,020,000 ",5.6," Rp196,000 ",1.2," Rp42,000 "," Rp1,242,000 ",Credit Card
+11/11/2025,Patung Malaikat,I Made Sudarma,Komang Adi Putra,2," Rp2,100,000 "," Rp4,200,000 "," Rp1,092,000 "," Rp2,184,000 ",6.1," Rp256,200 ",1.9," Rp79,800 "," Rp1,680,000 ",Cash
+11/12/2025,Patung Gajah,I Wayan Suartana,Ketut Yasa Pramana,2," Rp2,100,000 "," Rp4,200,000 "," Rp1,051,000 "," Rp2,102,000 ",5.6," Rp235,200 ",1.9," Rp79,800 "," Rp1,783,000 ",Credit Card
+11/13/2025,Patung Kucing,Ni Made Suryani,Ayu Cintya Dewi,3," Rp1,800,000 "," Rp5,400,000 "," Rp1,047,000 "," Rp3,141,000 ",6.2," Rp334,800 ",1.6," Rp86,400 "," Rp1,837,800 ",Debit
+11/14/2025,Patung Kuda,Ni Luh Putu Ariani,Kadek Arya Wibawa,2," Rp1,250,000 "," Rp2,500,000 "," Rp713,000 "," Rp1,426,000 ",7.7," Rp192,500 ",1.1," Rp27,500 "," Rp854,000 ",Credit Card
+11/15/2025,Patung Singa,I Ketut Ardana,Nyoman Budi Santosa,2," Rp4,200,000 "," Rp8,400,000 "," Rp2,406,000 "," Rp4,812,000 ",8.5," Rp714,000 ",1.4," Rp117,600 "," Rp2,756,400 ",Cash
+11/16/2025,Patung Dwarapala,I Gusti Ngurah Artawan,Kadek Arya Wibawa,1," Rp1,800,000 "," Rp1,800,000 "," Rp1,039,000 "," Rp1,039,000 ",5.3," Rp95,400 ",1.1," Rp19,800 "," Rp645,800 ",QRIS
+11/17/2025,Patung Penyu,I Made Sudarma,Komang Adi Putra,2," Rp3,800,000 "," Rp7,600,000 "," Rp1,928,000 "," Rp3,856,000 ",6.1," Rp463,600 ",1.9," Rp144,400 "," Rp3,136,000 ",Credit Card
+11/18/2025,Patung Harimau,Ni Made Suryani,Nyoman Budi Santosa,1," Rp1,250,000 "," Rp1,250,000 "," Rp670,000 "," Rp670,000 ",6.2," Rp77,500 ",1.4," Rp17,500 "," Rp485,000 ",Cash
+11/19/2025,Patung Garuda Wisnu,I Wayan Suartana,Kadek Arya Wibawa,3," Rp3,500,000 "," Rp10,500,000 "," Rp1,791,000 "," Rp5,373,000 ",5.6," Rp588,000 ",1.1," Rp115,500 "," Rp4,423,500 ",QRIS
+11/20/2025,Patung Abstrak Modern,Kadek Agus Wijaya,Komang Adi Putra,2," Rp3,500,000 "," Rp7,000,000 "," Rp2,052,000 "," Rp4,104,000 ",5.8," Rp406,000 ",1.9," Rp133,000 "," Rp2,357,000 ",Cash
+11/21/2025,Patung Hanoman,I Wayan Suartana,Nyoman Budi Santosa,3," Rp2,200,000 "," Rp6,600,000 "," Rp1,237,000 "," Rp3,711,000 ",5.6," Rp369,600 ",1.4," Rp92,400 "," Rp2,427,000 ",Credit Card
+11/22/2025,Patung Penyu,Ni Made Suryani,Dewa Gede Saputra,1," Rp1,250,000 "," Rp1,250,000 "," Rp666,000 "," Rp666,000 ",6.2," Rp77,500 ",1.2," Rp15,000 "," Rp491,500 ",Credit Card
+11/23/2025,Patung Gajah,Kadek Agus Wijaya,Ayu Cintya Dewi,2," Rp1,600,000 "," Rp3,200,000 "," Rp810,000 "," Rp1,620,000 ",5.8," Rp185,600 ",1.6," Rp51,200 "," Rp1,343,200 ",Credit Card
+11/24/2025,Patung Penyu,I Nyoman Sudiarta,Bagus Rai Pratama,1," Rp4,200,000 "," Rp4,200,000 "," Rp2,231,000 "," Rp2,231,000 ",5," Rp210,000 ",1.2," Rp50,400 "," Rp1,708,600 ",Credit Card
+11/25/2025,Patung Elang,I Ketut Ardana,Made Surya Dharma,2," Rp3,800,000 "," Rp7,600,000 "," Rp2,024,000 "," Rp4,048,000 ",8.5," Rp646,000 ",1.6," Rp121,600 "," Rp2,784,400 ",Cash
+11/26/2025,Patung Garuda Wisnu,Ni Luh Putu Ariani,Nyoman Budi Santosa,2," Rp3,500,000 "," Rp7,000,000 "," Rp2,005,000 "," Rp4,010,000 ",7.7," Rp539,000 ",1.4," Rp98,000 "," Rp2,353,000 ",Cash
+11/27/2025,Patung Kucing,Ni Made Suryani,Komang Adi Putra,1," Rp1,900,000 "," Rp1,900,000 "," Rp1,071,000 "," Rp1,071,000 ",6.2," Rp117,800 ",1.9," Rp36,100 "," Rp675,100 ",Cash
+11/28/2025,Patung Barong,I Nyoman Sudiarta,Nyoman Budi Santosa,2," Rp2,700,000 "," Rp5,400,000 "," Rp1,590,000 "," Rp3,180,000 ",5," Rp270,000 ",1.4," Rp75,600 "," Rp1,874,400 ",Credit Card
+11/29/2025,Patung Kepala Moai,I Ketut Ardana,Ayu Cintya Dewi,2," Rp2,700,000 "," Rp5,400,000 "," Rp1,477,000 "," Rp2,954,000 ",8.5," Rp459,000 ",1.6," Rp86,400 "," Rp1,900,600 ",Credit Card
+11/30/2025,Patung Harimau,I Gusti Ngurah Artawan,Dewa Gede Saputra,3," Rp2,700,000 "," Rp8,100,000 "," Rp1,382,000 "," Rp4,146,000 ",5.3," Rp429,300 ",1.2," Rp97,200 "," Rp3,427,500 ",Credit Card
+12/1/2025,Patung Shiva Mahadewa,I Made Sutama,Rizky Pramana,1," Rp4,200,000 "," Rp4,200,000 "," Rp2,400,000 "," Rp2,400,000 ",5.5," Rp231,000 ",1.1," Rp46,200 "," Rp1,522,800 ",Cash
+12/2/2025,Patung Rangda,I Wayan Artika,Dewa Mahendra,1," Rp950,000 "," Rp950,000 "," Rp547,000 "," Rp547,000 ",8.3," Rp78,850 ",1.9," Rp18,050 "," Rp306,100 ",Credit Card
+12/3/2025,Patung Rama & Shinta,I Nyoman Sucipta,Agung Aneka,3," Rp2,200,000 "," Rp6,600,000 "," Rp1,223,000 "," Rp3,669,000 ",9," Rp594,000 ",1.9," Rp125,400 "," Rp2,211,600 ",Debit
+12/4/2025,Patung Laksmi,I Made Sutama,Wayan Wahyu Pratama,2," Rp3,800,000 "," Rp7,600,000 "," Rp2,193,000 "," Rp4,386,000 ",5.5," Rp418,000 ",1.8," Rp136,800 "," Rp2,659,200 ",Cash
+12/4/2025,Patung Krisna,I Ketut Dana,Komang Arya,1," Rp1,250,000 "," Rp1,250,000 "," Rp687,000 "," Rp687,000 ",9.7," Rp121,250 ",1.4," Rp17,500 "," Rp424,250 ",Credit Card
+12/5/2025,Patung Hanoman,I Made Sutama,Ayu Lestari,1," Rp1,250,000 "," Rp1,250,000 "," Rp690,000 "," Rp690,000 ",5.5," Rp68,750 ",1.6," Rp20,000 "," Rp471,250 ",Credit Card
+12/5/2025,Patung Dewi Saraswati,Ni Luh Sri Astuti,Kadek Surya,2," Rp2,200,000 "," Rp4,400,000 "," Rp1,194,000 "," Rp2,388,000 ",7.2," Rp316,800 ",1.6," Rp70,400 "," Rp1,624,800 ",Credit Card
+12/6/2025,Patung Garuda Wisnu,Ni Luh Sri Astuti,Komang Arya,2," Rp1,800,000 "," Rp3,600,000 "," Rp905,000 "," Rp1,810,000 ",7.2," Rp259,200 ",1.4," Rp50,400 "," Rp1,480,400 ",Cash
+12/7/2025,Patung Ganesha Batu,I Ketut Dana,Ayu Lestari,2," Rp3,500,000 "," Rp7,000,000 "," Rp1,788,000 "," Rp3,576,000 ",9.7," Rp679,000 ",1.6," Rp112,000 "," Rp2,633,000 ",Credit Card
+12/7/2025,Patung Laksmi,I Nyoman Sucipta,Made Pratama,1," Rp2,200,000 "," Rp2,200,000 "," Rp1,107,000 "," Rp1,107,000 ",9," Rp198,000 ",1.6," Rp35,200 "," Rp859,800 ",Credit Card
+12/7/2025,Patung Dewi Saraswati,I Wayan Artika,Dewa Mahendra,3," Rp1,600,000 "," Rp4,800,000 "," Rp902,000 "," Rp2,706,000 ",8.3," Rp398,400 ",1.9," Rp91,200 "," Rp1,604,400 ",Credit Card
+12/8/2025,Patung Shiva Mahadewa,Ni Luh Sri Astuti,I wayan sudana ,3," Rp1,800,000 "," Rp5,400,000 "," Rp957,000 "," Rp2,871,000 ",7.2," Rp388,800 ",1.2," Rp64,800 "," Rp2,075,400 ",Cash
+12/11/2025,Patung Garuda Wisnu,Ni Luh Sri Astuti,Agus Santika,3," Rp950,000 "," Rp2,850,000 "," Rp523,000 "," Rp1,569,000 ",7.2," Rp205,200 ",1.9," Rp54,150 "," Rp1,021,650 ",Credit Card
+12/13/2025,Patung Dewi Sri,I Ketut Dana,Made Pratama,1," Rp4,200,000 "," Rp4,200,000 "," Rp2,481,000 "," Rp2,481,000 ",9.7," Rp407,400 ",1.6," Rp67,200 "," Rp1,244,400 ",Credit Card
+12/13/2025,Patung Shiva Mahadewa,Ni Luh Sri Astuti,Bagus Adnyana,3," Rp950,000 "," Rp2,850,000 "," Rp499,000 "," Rp1,497,000 ",7.2," Rp205,200 ",1.4," Rp39,900 "," Rp1,107,900 ",Cash
+12/16/2025,Patung Barong Mini,I Wayan Artika,Rizky Pramana,1," Rp4,200,000 "," Rp4,200,000 "," Rp2,272,000 "," Rp2,272,000 ",8.3," Rp348,600 ",1.1," Rp46,200 "," Rp1,533,200 ",Cash
+12/16/2025,Patung Rangda,I Ketut Dana,Komang Arya,1," Rp3,800,000 "," Rp3,800,000 "," Rp2,187,000 "," Rp2,187,000 ",9.7," Rp368,600 ",1.4," Rp53,200 "," Rp1,191,200 ",Credit Card
+12/18/2025,Patung Naga Basuki,I Ketut Dana,Pak Bagus Ketewel,3," Rp1,250,000 "," Rp3,750,000 "," Rp654,000 "," Rp1,962,000 ",9.7," Rp363,750 ",1.5," Rp56,250 "," Rp1,368,000 ",Cash
+12/22/2025,Patung Barong Mini,I Made Sutama,Komang Arya,3," Rp950,000 "," Rp2,850,000 "," Rp482,000 "," Rp1,446,000 ",5.5," Rp156,750 ",1.4," Rp39,900 "," Rp1,207,350 ",Cash
+12/30/2025,Patung Ganesha Batu,I Wayan Artika,Yudi Saputra,2," Rp1,800,000 "," Rp3,600,000 "," Rp952,000 "," Rp1,904,000 ",8.3," Rp298,800 ",1.7," Rp61,200 "," Rp1,336,000 ",QRIS
+12/31/2025,Patung Rangda,I Wayan Artika,Dewa Mahendra,2," Rp950,000 "," Rp1,900,000 "," Rp490,000 "," Rp980,000 ",8.3," Rp157,700 ",1.9," Rp36,100 "," Rp726,200 ",Credit Card
+12/31/2025,Patung Hanoman,Ni Luh Sri Astuti,Agung Putri ,1," Rp950,000 "," Rp950,000 "," Rp563,000 "," Rp563,000 ",7.2," Rp68,400 ",1.2," Rp11,400 "," Rp307,200 ",Credit Card
+12/31/2025,Patung Dwarapala,I Made Sutama,Kadek Surya,3," Rp3,500,000 "," Rp10,500,000 "," Rp2,033,000 "," Rp6,099,000 ",5.5," Rp577,500 ",1.6," Rp168,000 "," Rp3,655,500 ",QRIS
+1/3/2026,Patung Dewi Saraswati,I Ketut Dana,Putu Wijaya,3," Rp3,800,000 "," Rp11,400,000 "," Rp2,141,000 "," Rp6,423,000 ",9.7," Rp1,105,800 ",1.1," Rp125,400 "," Rp3,745,800 ",Cash
+1/3/2026,Patung Arjuna,I Ketut Dana,Yudi Saputra,2," Rp950,000 "," Rp1,900,000 "," Rp558,000 "," Rp1,116,000 ",9.7," Rp184,300 ",1.7," Rp32,300 "," Rp567,400 ",Cash
+1/5/2026,Patung Laksmi,Ni Luh Sri Astuti,Agus Santika,1," Rp3,500,000 "," Rp3,500,000 "," Rp2,031,000 "," Rp2,031,000 ",7.2," Rp252,000 ",1.9," Rp66,500 "," Rp1,150,500 ",Debit
+1/5/2026,Patung Rangda,I Made Sutama,Yudi Saputra,2," Rp1,800,000 "," Rp3,600,000 "," Rp934,000 "," Rp1,868,000 ",5.5," Rp198,000 ",1.7," Rp61,200 "," Rp1,472,800 ",Credit Card
+1/6/2026,Patung Dewi Saraswati,I Nyoman Sucipta,Yoga Mahendra ,3," Rp1,800,000 "," Rp5,400,000 "," Rp1,061,000 "," Rp3,183,000 ",9," Rp486,000 ",2," Rp108,000 "," Rp1,623,000 ",Cash
+1/12/2026,Patung Arjuna,I Ketut Dana,Putu Wijaya,2," Rp1,800,000 "," Rp3,600,000 "," Rp997,000 "," Rp1,994,000 ",9.7," Rp349,200 ",1.1," Rp39,600 "," Rp1,217,200 ",Credit Card
+1/13/2026,Patung Krisna,I Ketut Dana,Rizky Pramana,1," Rp3,500,000 "," Rp3,500,000 "," Rp2,033,000 "," Rp2,033,000 ",9.7," Rp339,500 ",1.1," Rp38,500 "," Rp1,089,000 ",Cash
+1/18/2026,Patung Garuda Wisnu,I Nyoman Sucipta,Made Pratama,3," Rp1,800,000 "," Rp5,400,000 "," Rp1,061,000 "," Rp3,183,000 ",9," Rp486,000 ",1.6," Rp86,400 "," Rp1,644,600 ",Credit Card
+1/19/2026,Patung Dwarapala,I Made Sutama,Ketut Sudana,3," Rp3,800,000 "," Rp11,400,000 "," Rp2,021,000 "," Rp6,063,000 ",5.5," Rp627,000 ",1.9," Rp216,600 "," Rp4,493,400 ",Credit Card
+1/20/2026,Patung Shiva Mahadewa,Ni Luh Sri Astuti,Agung Aneka,2," Rp950,000 "," Rp1,900,000 "," Rp485,000 "," Rp970,000 ",7.2," Rp136,800 ",1.9," Rp36,100 "," Rp757,100 ",Cash
+1/20/2026,Patung Dewi Saraswati,I Made Sutama,Putu Wijaya,1," Rp1,250,000 "," Rp1,250,000 "," Rp653,000 "," Rp653,000 ",5.5," Rp68,750 ",1.1," Rp13,750 "," Rp514,500 ",Cash
+1/22/2026,Patung Arjuna,I Wayan Artika,Ida Bagus Putra,3," Rp3,800,000 "," Rp11,400,000 "," Rp2,062,000 "," Rp6,186,000 ",8.3," Rp946,200 ",1.8," Rp205,200 "," Rp4,062,600 ",Cash
+1/26/2026,Patung Shiva Mahadewa,I Made Sutama,Dewa Mahendra,3," Rp3,800,000 "," Rp11,400,000 "," Rp2,211,000 "," Rp6,633,000 ",5.5," Rp627,000 ",1.9," Rp216,600 "," Rp3,923,400 ",Cash
+1/26/2026,Patung Naga Basuki,I Wayan Artika,Arimbawa ,3," Rp1,800,000 "," Rp5,400,000 "," Rp1,055,000 "," Rp3,165,000 ",8.3," Rp448,200 ",1.6," Rp86,400 "," Rp1,700,400 ",Credit Card
+1/27/2026,Patung Buddha Meditasi,I Made Sutama,Putra Kencana,1," Rp3,800,000 "," Rp3,800,000 "," Rp1,903,000 "," Rp1,903,000 ",5.5," Rp209,000 ",1," Rp38,000 "," Rp1,650,000 ",Credit Card
+1/27/2026,Patung Krisna,I Wayan Artika,Agung Sudibya,3," Rp3,800,000 "," Rp11,400,000 "," Rp2,094,000 "," Rp6,282,000 ",8.3," Rp946,200 ",1.6," Rp182,400 "," Rp3,989,400 ",Credit Card
+1/28/2026,Patung Laksmi,I Made Sutama,Putu Wijaya,2," Rp3,500,000 "," Rp7,000,000 "," Rp1,896,000 "," Rp3,792,000 ",5.5," Rp385,000 ",1.1," Rp77,000 "," Rp2,746,000 ",QRIS
+1/29/2026,Patung Naga Basuki,I Ketut Dana,Kresna Putra,1," Rp950,000 "," Rp950,000 "," Rp496,000 "," Rp496,000 ",9.7," Rp92,150 ",2," Rp19,000 "," Rp342,850 ",Credit Card
+1/30/2026,Patung Rangda,Ni Luh Sri Astuti,Kadek Surya,2," Rp950,000 "," Rp1,900,000 "," Rp486,000 "," Rp972,000 ",7.2," Rp136,800 ",1.6," Rp30,400 "," Rp760,800 ",Debit
+1/30/2026,Patung Dewi Sri,Ni Luh Sri Astuti,Yoga Wijaya,1," Rp1,250,000 "," Rp1,250,000 "," Rp667,000 "," Rp667,000 ",7.2," Rp90,000 ",1.7," Rp21,250 "," Rp471,750 ",Cash

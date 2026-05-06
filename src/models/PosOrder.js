@@ -45,6 +45,78 @@ const posOrderItemSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const posOrderDeliverySchema = new mongoose.Schema(
+  {
+    packageName: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    recipientName: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    destinationAddress: {
+      type: String,
+      default: '',
+      trim: true
+    },
+
+    courierId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Courier',
+      default: null
+    },
+    courierName: {
+      type: String,
+      default: '',
+      trim: true
+    },
+
+    pickupDateTime: {
+      type: Date,
+      default: null
+    },
+    packageWeight: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    courierPrice: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    storeProfit: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    totalPrice: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    trackingNumber: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    notes: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    status: {
+      type: String,
+      enum: ['to_be_scheduled', 'scheduled'],
+      default: 'to_be_scheduled'
+    }
+  },
+  { _id: false }
+);
+
 const posOrderSchema = new mongoose.Schema(
   {
     receiptNumber: {
@@ -117,11 +189,18 @@ const posOrderSchema = new mongoose.Schema(
       default: 0,
       min: 0
     },
+
     deliveryFee: {
       type: Number,
       default: 0,
       min: 0
     },
+
+    delivery: {
+      type: posOrderDeliverySchema,
+      default: null
+    },
+
     discount: {
       type: Number,
       default: 0,
@@ -170,5 +249,9 @@ posOrderSchema.index({ receiptNumber: 1 });
 posOrderSchema.index({ customerName: 1 });
 posOrderSchema.index({ cashierName: 1 });
 posOrderSchema.index({ paymentMethod: 1 });
+posOrderSchema.index({ 'delivery.status': 1 });
+posOrderSchema.index({ 'delivery.courierId': 1 });
+posOrderSchema.index({ 'delivery.courierName': 1 });
+posOrderSchema.index({ 'delivery.trackingNumber': 1 });
 
 module.exports = mongoose.model('PosOrder', posOrderSchema);

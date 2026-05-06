@@ -16,6 +16,11 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const childProductRoutes = require('./routes/childProductRoutes');
 const saleRoutes = require('./routes/saleRoutes')
 const posRoutes = require('./routes/posRoutes');
+const storeSettingRoutes = require('./routes/storeSettingRoutes');
+const DeliveryRoutes = require('./routes/deliveryRoutes');
+const DailyReportRoutes = require('./routes/dailyReportRoutes');
+const forecastRoutes = require('./routes/forecastRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
 
 // Middleware
 app.use(cors());
@@ -38,6 +43,11 @@ apiRoutes.use('/categories', categoryRoutes);
 apiRoutes.use('/child-items', childProductRoutes);
 apiRoutes.use('/sales', saleRoutes);
 apiRoutes.use('/pos', posRoutes);
+apiRoutes.use('/store-settings', storeSettingRoutes);
+apiRoutes.use('/deliveries', DeliveryRoutes);
+apiRoutes.use('/daily-reports', DailyReportRoutes);
+apiRoutes.use('/forecast', forecastRoutes);
+apiRoutes.use('/analytics', analyticsRoutes);
 
 apiRoutes.get('/', (req, res) => {
   res.status(200).json({
