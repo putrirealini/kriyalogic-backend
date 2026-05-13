@@ -46,7 +46,7 @@ apiRoutes.use('/pos', posRoutes);
 apiRoutes.use('/store-settings', storeSettingRoutes);
 apiRoutes.use('/deliveries', DeliveryRoutes);
 apiRoutes.use('/daily-reports', DailyReportRoutes);
-apiRoutes.use('/forecast', forecastRoutes);
+apiRoutes.use('/forecasts', forecastRoutes);
 apiRoutes.use('/analytics', analyticsRoutes);
 
 apiRoutes.get('/', (req, res) => {

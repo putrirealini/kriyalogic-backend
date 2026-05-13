@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getForecastByParentCode, getAvailableProducts } = require('../controllers/forecastController');
+const { getForecastByParentCode, getAvailableProducts, getForecastData } = require('../controllers/forecastController');
 
+router.get('/', getForecastData);
 // GET /api/v1/forecast/products/list - Get available products
 router.get('/products/list', getAvailableProducts);
 

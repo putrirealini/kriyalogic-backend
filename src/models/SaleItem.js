@@ -68,6 +68,11 @@ const saleItemSchema = new mongoose.Schema(
       default: 0
     },
 
+    quantity: {
+      type: Number,
+      default: 1
+    },
+    
     artisanCommissionAmount: {
       type: Number,
       default: 0

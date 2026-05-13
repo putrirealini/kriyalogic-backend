@@ -35,7 +35,8 @@ async function seedAnalyticsRecords() {
   const results = [];
 
   return new Promise((resolve, reject) => {
-    fs.createReadStream('./KriyaLogic_Final_Analytics_Report_v2.csv')
+    const dataPath = require('path').resolve(__dirname, '../../data/KriyaLogic_Final_Analytics_Report_v2.csv');
+    fs.createReadStream(dataPath)
       .pipe(csv())
       .on('data', (data) => {
         const record = {
@@ -73,7 +74,8 @@ async function seedDeliveryRecords() {
   const results = [];
 
   return new Promise((resolve, reject) => {
-    fs.createReadStream('./KriyaLogic_Delivery_Analytics_Premium_Price.csv')
+    const dataPath = require('path').resolve(__dirname, '../../data/KriyaLogic_Delivery_Analytics_Premium_Price.csv');
+    fs.createReadStream(dataPath)
       .pipe(csv())
       .on('data', (data) => {
         const record = {

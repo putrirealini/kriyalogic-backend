@@ -11,7 +11,7 @@ const forecastResultSchema = new mongoose.Schema(
       type: Date,
       required: true
     },
-    predicted_demand: {
+    predicted_quantity: {
       type: Number,
       required: true
     },
