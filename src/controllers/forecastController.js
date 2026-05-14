@@ -118,9 +118,12 @@ const getForecastData = asyncHandler(async (req, res) => {
       });
     }
 
-    let startDate;
-    let endDate;
-    let period;
+    let period = {
+      all: true
+    };
+
+    let startDate = null;
+    let endDate = null;
 
     if (hasMonthFilter && hasYearFilter) {
       const monthNumber = Number.parseInt(month, 10);
@@ -139,8 +142,13 @@ const getForecastData = asyncHandler(async (req, res) => {
         });
       }
 
-      startDate = new Date(yearNumber, monthNumber - 1, 1);
-      endDate = new Date(yearNumber, monthNumber, 1);
+      startDate = new Date(
+        Date.UTC(yearNumber, monthNumber - 1, 1, 0, 0, 0, 0)
+      );
+
+      endDate = new Date(
+        Date.UTC(yearNumber, monthNumber, 1, 0, 0, 0, 0)
+      );
 
       period = {
         month: monthNumber,
@@ -148,32 +156,120 @@ const getForecastData = asyncHandler(async (req, res) => {
         start_date: startDate,
         end_date: endDate
       };
-    } else {
-      startDate = new Date();
-      startDate.setHours(0, 0, 0, 0);
 
-      endDate = new Date(startDate);
-      endDate.setDate(endDate.getDate() + 30);
-
-      period = {
-        start_date: startDate,
-        end_date: endDate
-      };
+      console.log('monthNumber:', monthNumber);
+      console.log('yearNumber:', yearNumber);
+      console.log('startDate:', startDate);
+      console.log('endDate:', endDate);
     }
 
-    const forecasts = await ForecastResult.aggregate([
+    console.log('Fetching forecast data for period:', period);
+
+    const basePipeline = [
       {
-        $match: {
-          forecast_date: {
-            $gte: startDate,
-            $lt: endDate
+        $addFields: {
+          forecast_date_parsed: {
+            $convert: {
+              input: '$forecast_date',
+              to: 'date',
+              onError: null,
+              onNull: null
+            }
           }
         }
       },
       {
+        $match: {
+          forecast_date_parsed: {
+            $ne: null
+          }
+        }
+      }
+    ];
+
+    const dateMatchStage =
+      hasMonthFilter && hasYearFilter
+        ? [
+            {
+              $match: {
+                forecast_date_parsed: {
+                  $gte: startDate,
+                  $lt: endDate
+                }
+              }
+            }
+          ]
+        : [];
+
+    const availableMonths = await ForecastResult.aggregate([
+      ...basePipeline,
+      {
+        $group: {
+          _id: {
+            year: {
+              $year: '$forecast_date_parsed'
+            },
+            month: {
+              $month: '$forecast_date_parsed'
+            }
+          },
+          total_records: {
+            $sum: 1
+          },
+          first_date: {
+            $min: '$forecast_date_parsed'
+          },
+          last_date: {
+            $max: '$forecast_date_parsed'
+          }
+        }
+      },
+      {
+        $sort: {
+          '_id.year': 1,
+          '_id.month': 1
+        }
+      }
+    ]);
+
+    console.log('Available forecast months:', availableMonths);
+
+    const forecasts = await ForecastResult.aggregate([
+      ...basePipeline,
+      ...dateMatchStage,
+      {
         $group: {
           _id: '$product_code',
-          predicted_stock: { $sum: '$predicted_quantity' }
+
+          predicted_stock: {
+            $sum: {
+              $ifNull: ['$predicted_quantity', 0]
+            }
+          },
+
+          lower_bound_estimate: {
+            $sum: {
+              $ifNull: ['$lower_bound_estimate', 0]
+            }
+          },
+
+          upper_bound_estimate: {
+            $sum: {
+              $ifNull: ['$upper_bound_estimate', 0]
+            }
+          },
+
+          total_forecast_days: {
+            $sum: 1
+          },
+
+          first_forecast_date: {
+            $min: '$forecast_date_parsed'
+          },
+
+          last_forecast_date: {
+            $max: '$forecast_date_parsed'
+          }
         }
       },
       {
@@ -183,47 +279,103 @@ const getForecastData = asyncHandler(async (req, res) => {
       }
     ]);
 
-    /**
-     * Jangan return 404 kalau data kosong.
-     * Endpoint-nya ada, datanya saja belum ada.
-     */
+    console.log(
+      `Found ${forecasts.length} forecast records for the specified period.`
+    );
+
     if (!forecasts || forecasts.length === 0) {
       return res.status(200).json({
         success: true,
         period,
         data: [],
         count: 0,
-        message: hasMonthFilter && hasYearFilter
-          ? 'No forecast data found for the selected month and year'
-          : 'No forecast data found for the next 30 days'
+        available_months: availableMonths,
+        message:
+          hasMonthFilter && hasYearFilter
+            ? 'No forecast data found for the selected month and year'
+            : 'No forecast data found'
       });
     }
 
-    const productCodes = forecasts.map((forecast) => forecast._id);
+    const productIdentifiers = forecasts
+      .map((forecast) => forecast._id)
+      .filter(Boolean);
+
+    const normalizedProductNames = productIdentifiers.map((identifier) =>
+      identifier.replace(/_/g, ' ')
+    );
+
+    const normalizedSlugs = productIdentifiers.map((identifier) =>
+      identifier.toLowerCase().replace(/_/g, '-')
+    );
 
     const products = await MasterProduct.find({
-      parentCode: { $in: productCodes }
-    }).select('parentCode productName');
+      $or: [
+        {
+          parentCode: {
+            $in: productIdentifiers
+          }
+        },
+        {
+          productName: {
+            $in: productIdentifiers
+          }
+        },
+        {
+          productName: {
+            $in: normalizedProductNames
+          }
+        },
+        {
+          slug: {
+            $in: normalizedSlugs
+          }
+        }
+      ]
+    }).select('parentCode productName slug');
 
-    const productMap = new Map(
-      products.map((product) => [product.parentCode, product])
-    );
+    const productMap = new Map();
+
+    products.forEach((product) => {
+      if (product.parentCode) {
+        productMap.set(product.parentCode, product);
+      }
+
+      if (product.productName) {
+        productMap.set(product.productName, product);
+        productMap.set(product.productName.replace(/\s+/g, '_'), product);
+      }
+
+      if (product.slug) {
+        productMap.set(product.slug, product);
+        productMap.set(product.slug.replace(/-/g, '_'), product);
+      }
+    });
 
     const productIds = products.map((product) => product._id);
 
-    const stockCounts = await ProductItem.aggregate([
-      {
-        $match: {
-          masterProductId: { $in: productIds }
+    let stockCounts = [];
+
+    if (productIds.length > 0) {
+      stockCounts = await ProductItem.aggregate([
+        {
+          $match: {
+            masterProductId: {
+              $in: productIds
+            },
+            status: 'available'
+          }
+        },
+        {
+          $group: {
+            _id: '$masterProductId',
+            actual_stock: {
+              $sum: 1
+            }
+          }
         }
-      },
-      {
-        $group: {
-          _id: '$masterProductId',
-          actual_stock: { $sum: 1 }
-        }
-      }
-    ]);
+      ]);
+    }
 
     const stockMap = new Map(
       stockCounts.map((stock) => [
@@ -242,11 +394,19 @@ const getForecastData = asyncHandler(async (req, res) => {
       const predictedStock = forecast.predicted_stock || 0;
 
       return {
-        product_name: product?.productName || '',
-        product_code: forecast._id,
+        product_name: product?.productName || forecast._id,
+        product_code: product?.parentCode || forecast._id,
+
         actual_stock: actualStock,
         predicted_stock: predictedStock,
-        remaining_stock: predictedStock - actualStock
+        remaining_stock: predictedStock - actualStock,
+
+        lower_bound_estimate: forecast.lower_bound_estimate || 0,
+        upper_bound_estimate: forecast.upper_bound_estimate || 0,
+
+        total_forecast_days: forecast.total_forecast_days || 0,
+        first_forecast_date: forecast.first_forecast_date || null,
+        last_forecast_date: forecast.last_forecast_date || null
       };
     });
 
@@ -254,7 +414,8 @@ const getForecastData = asyncHandler(async (req, res) => {
       success: true,
       period,
       data,
-      count: data.length
+      count: data.length,
+      available_months: availableMonths
     });
   } catch (error) {
     console.error('✗ Error fetching forecast data:', error);
