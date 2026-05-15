@@ -12,6 +12,31 @@ const posOrderItemSchema = new mongoose.Schema(
       ref: 'MasterProduct',
       default: null
     },
+    artisanId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Artisan',
+      default: null
+    },
+    artisanName: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    artisanCommissionRate: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    artisanCommissionAmount: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    costPrice: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
     itemName: {
       type: String,
       required: true,

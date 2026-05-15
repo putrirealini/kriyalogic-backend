@@ -49,9 +49,9 @@ const getForecastByParentCode = asyncHandler(async (req, res) => {
       
       try {
         await new Promise((resolve, reject) => {
-          const scriptPath = path.resolve(__dirname, '../../../../ai_engine/ml_forecasting.py');
-          const pythonExec = path.resolve(__dirname, '../../../../.venv/bin/python');
-          const engineDir = path.resolve(__dirname, '../../../../ai_engine');
+          const engineDir = path.resolve(__dirname, '../../../kriyalogic-forecasting');
+          const scriptPath = path.join(engineDir, 'ml_forecasting.py');
+          const pythonExec = path.join(engineDir, 'venv/bin/python');
 
           console.log(`Running: ${pythonExec} ${scriptPath} ${actualCode}`);
           
@@ -391,7 +391,8 @@ const getForecastData = asyncHandler(async (req, res) => {
         ? stockMap.get(product._id.toString()) || 0
         : 0;
 
-      const predictedStock = forecast.predicted_stock || 0;
+      const predictedStock = Math.round(forecast.predicted_stock || 0);
+      const remainingStock = Math.round(predictedStock - actualStock);
 
       return {
         product_name: product?.productName || forecast._id,
@@ -399,7 +400,7 @@ const getForecastData = asyncHandler(async (req, res) => {
 
         actual_stock: actualStock,
         predicted_stock: predictedStock,
-        remaining_stock: predictedStock - actualStock,
+        remaining_stock: remainingStock,
 
         lower_bound_estimate: forecast.lower_bound_estimate || 0,
         upper_bound_estimate: forecast.upper_bound_estimate || 0,

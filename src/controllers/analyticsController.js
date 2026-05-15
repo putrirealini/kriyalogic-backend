@@ -1,183 +1,208 @@
-const AnalyticsRecord = require('../models/AnalyticsRecord');
-const DeliveryRecord = require('../models/DeliveryRecord');
-const { exec } = require('child_process');
-const path = require('path');
+const PosOrder = require('../models/PosOrder');
 
-// Get analytics summary using aggregation pipelines
+const parseDateRange = ({ from, to }) => {
+  const match = {
+    status: 'paid'
+  };
+
+  if (!from && !to) {
+    return { match };
+  }
+
+  if (!from || !to) {
+    return {
+      error: 'from and to query parameters must be provided together'
+    };
+  }
+
+  const startDate = new Date(
+    /^\d{4}-\d{2}-\d{2}$/.test(from) ? `${from}T00:00:00.000Z` : from
+  );
+  const endDate = new Date(
+    /^\d{4}-\d{2}-\d{2}$/.test(to) ? `${to}T23:59:59.999Z` : to
+  );
+
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+    return {
+      error: 'from and to must be valid dates'
+    };
+  }
+
+  match.paidAt = {
+    $gte: startDate,
+    $lte: endDate
+  };
+
+  return { match };
+};
+
+// Get analytics summary from live POS transactions.
 const getAnalyticsSummary = async (req, res) => {
   try {
-    console.log('📊 Fetching analytics summary...');
+    console.log('Fetching realtime analytics summary from PosOrder...');
 
-    // Check if AnalyticsRecord collection exists and has data
-    let recordCount = await AnalyticsRecord.countDocuments();
-    console.log(`✓ Found ${recordCount} AnalyticsRecord documents`);
+    const { match, error } = parseDateRange(req.query);
 
-    if (recordCount === 0) {
-      console.warn('⚠ No AnalyticsRecord data found. Attempting to seed data automatically...');
-      
-      try {
-        await new Promise((resolve, reject) => {
-          const backendDir = path.resolve(__dirname, '../../');
-          console.log(`Running seed:analytics in ${backendDir}`);
-          
-          exec('npm run seed:analytics', {
-            cwd: backendDir
-          }, (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Error executing seed script: ${error.message}`);
-              return reject(error);
-            }
-            if (stderr && !stderr.includes('npm WARN')) {
-              console.warn(`Seed Script Warning/Error output: ${stderr}`);
-            }
-            console.log(`Seed Script Output:\n${stdout}`);
-            resolve();
-          });
-        });
-
-        // Re-check count after seeding
-        recordCount = await AnalyticsRecord.countDocuments();
-        console.log(`✓ Post-seed check: Found ${recordCount} AnalyticsRecord documents`);
-      } catch (seedError) {
-        console.error('Failed to automatically seed analytics data:', seedError);
-      }
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: error
+      });
     }
 
-    const { from, to } = req.query;
-
-    // Aggregate totals from AnalyticsRecord
-    const analyticsTotals = await AnalyticsRecord.aggregate([
+    const [totals] = await PosOrder.aggregate([
+      { $match: match },
       {
-        $match: {
-          $and: [
-            { date: { $gte: new Date(from) } },
-            { date: { $lte: new Date(to) } }
-          ]
-        }
-      },
-      {
-        $group: {
-          _id: null,
-          totalQuantity: { $sum: '$quantity' },
-          totalRevenue: { $sum: '$totalSales' },
-          totalCommissionExpenses: {
-            $sum: { $add: ['$artisanCommission', '$guideCommission'] }
+        $addFields: {
+          itemCostTotal: {
+            $sum: {
+              $map: {
+                input: { $ifNull: ['$items', []] },
+                as: 'item',
+                in: {
+                  $multiply: [
+                    { $ifNull: ['$$item.costPrice', 0] },
+                    { $ifNull: ['$$item.qty', 1] }
+                  ]
+                }
+              }
+            }
           },
-          netProfit: { $sum: '$netProfit' }
+          artisanCommissionTotal: {
+            $sum: {
+              $map: {
+                input: { $ifNull: ['$items', []] },
+                as: 'item',
+                in: { $ifNull: ['$$item.artisanCommissionAmount', 0] }
+              }
+            }
+          },
+          quantityTotal: {
+            $sum: {
+              $map: {
+                input: { $ifNull: ['$items', []] },
+                as: 'item',
+                in: { $ifNull: ['$$item.qty', 0] }
+              }
+            }
+          }
         }
-      }
-    ]);
-
-    // Aggregate delivery profit from DeliveryRecord
-    const deliveryTotals = await DeliveryRecord.aggregate([
+      },
       {
         $group: {
           _id: null,
-          deliveryProfit: { $sum: '$storeProfit15Percent' }
+          totalQuantity: { $sum: '$quantityTotal' },
+          totalRevenue: { $sum: { $ifNull: ['$subtotal', 0] } },
+          totalCostPrice: { $sum: '$itemCostTotal' },
+          totalArtisanCommission: { $sum: '$artisanCommissionTotal' },
+          totalGuideCommission: { $sum: { $ifNull: ['$guideCommissionAmount', 0] } },
+          deliveryProfit: { $sum: { $ifNull: ['$delivery.storeProfit', 0] } }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          totalQuantity: 1,
+          totalRevenue: 1,
+          totalCommissionExpenses: {
+            $add: ['$totalArtisanCommission', '$totalGuideCommission']
+          },
+          netProfit: {
+            $subtract: [
+              '$totalRevenue',
+              {
+                $add: [
+                  '$totalCostPrice',
+                  '$totalArtisanCommission',
+                  '$totalGuideCommission'
+                ]
+              }
+            ]
+          },
+          deliveryProfit: 1
         }
       }
     ]);
 
-    // Top selling products by quantity
-    const topSellingProducts = await AnalyticsRecord.aggregate([
-      {
-        $match: {
-          $and: [
-            { date: { $gte: new Date(from) } },
-            { date: { $lte: new Date(to) } }
-          ]
-        }
-      },
+    const topSellingProducts = await PosOrder.aggregate([
+      { $match: match },
+      { $unwind: '$items' },
       {
         $group: {
-          _id: '$productName',
-          totalQuantity: { $sum: '$quantity' }
+          _id: '$items.itemName',
+          totalQuantity: { $sum: { $ifNull: ['$items.qty', 0] } }
         }
       },
-      {
-        $sort: { totalQuantity: -1 }
-      },
-      {
-        $limit: 5
-      },
+      { $sort: { totalQuantity: -1 } },
+      { $limit: 5 },
       {
         $project: {
+          _id: 0,
           productName: '$_id',
-          totalQuantity: 1,
-          _id: 0
+          totalQuantity: 1
         }
       }
     ]);
 
-    // Top performing tour guides by total sales
-    const topPerformingTourGuides = await AnalyticsRecord.aggregate([
+    const topPerformingTourGuides = await PosOrder.aggregate([
       {
         $match: {
-          $and: [
-            { date: { $gte: new Date(from) } },
-            { date: { $lte: new Date(to) } }
-          ]
+          ...match,
+          guideName: {
+            $nin: ['', null]
+          }
         }
       },
       {
         $group: {
-          _id: '$tourGuide',
-          totalSales: { $sum: '$totalSales' }
+          _id: '$guideName',
+          totalSales: { $sum: { $ifNull: ['$subtotal', 0] } }
         }
       },
-      {
-        $sort: { totalSales: -1 }
-      },
-      {
-        $limit: 5
-      },
+      { $sort: { totalSales: -1 } },
+      { $limit: 5 },
       {
         $project: {
+          _id: 0,
           tourGuide: '$_id',
-          totalSales: 1,
-          _id: 0
+          totalSales: 1
         }
       }
     ]);
 
-    // Top performing artisans by quantity sold
-    const topPerformingArtisans = await AnalyticsRecord.aggregate([
+    const topPerformingArtisans = await PosOrder.aggregate([
+      { $match: match },
+      { $unwind: '$items' },
       {
         $match: {
-          $and: [
-            { date: { $gte: new Date(from) } },
-            { date: { $lte: new Date(to) } }
-          ]
+          'items.artisanName': {
+            $nin: ['', null]
+          }
         }
       },
       {
         $group: {
-          _id: '$artisanName',
-          totalQuantity: { $sum: '$quantity' }
+          _id: '$items.artisanName',
+          totalQuantity: { $sum: { $ifNull: ['$items.qty', 0] } }
         }
       },
-      {
-        $sort: { totalQuantity: -1 }
-      },
-      {
-        $limit: 5
-      },
+      { $sort: { totalQuantity: -1 } },
+      { $limit: 5 },
       {
         $project: {
+          _id: 0,
           artisanName: '$_id',
-          totalQuantity: 1,
-          _id: 0
+          totalQuantity: 1
         }
       }
     ]);
 
-    // Prepare response
     const summary = {
-      totalQuantity: analyticsTotals[0]?.totalQuantity || 0,
-      totalRevenue: analyticsTotals[0]?.totalRevenue || 0,
-      totalCommissionExpenses: analyticsTotals[0]?.totalCommissionExpenses || 0,
-      netProfit: analyticsTotals[0]?.netProfit || 0,
-      deliveryProfit: deliveryTotals[0]?.deliveryProfit || 0,
+      totalQuantity: totals?.totalQuantity || 0,
+      totalRevenue: totals?.totalRevenue || 0,
+      totalCommissionExpenses: totals?.totalCommissionExpenses || 0,
+      netProfit: totals?.netProfit || 0,
+      deliveryProfit: totals?.deliveryProfit || 0,
       topSellingProducts,
       topPerformingTourGuides,
       topPerformingArtisans
@@ -187,7 +212,6 @@ const getAnalyticsSummary = async (req, res) => {
       success: true,
       data: summary
     });
-
   } catch (error) {
     console.error('Error fetching analytics summary:', error);
     res.status(500).json({

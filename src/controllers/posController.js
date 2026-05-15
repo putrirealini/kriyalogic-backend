@@ -239,7 +239,9 @@ exports.payNow = asyncHandler(async (req, res) => {
 
       const orderItems = productItems.map((item) => {
         const price = Number(item.sellingPrice || 0);
+        const costPrice = Number(item.costPrice || 0);
         const artisanCommissionRate = Number(item.artisanId?.commissionRate || 0);
+        const artisanCommissionAmount = (price * artisanCommissionRate) / 100;
 
         return {
           productItemId: item._id,
@@ -247,6 +249,8 @@ exports.payNow = asyncHandler(async (req, res) => {
           artisanId: item.artisanId?._id || null,
           artisanName: item.artisanId?.fullName || '',
           artisanCommissionRate,
+          artisanCommissionAmount,
+          costPrice,
           itemName:
             item.itemName ||
             item.masterProductId?.productName ||
@@ -299,7 +303,7 @@ exports.payNow = asyncHandler(async (req, res) => {
             cashierId: req.user?._id || null,
             cashierName: req.user?.username || req.user?.name || '',
             guideId: guide?._id || null,
-            guideName: guide?.fullName || guide?.name || '',
+            guideName: guide?.guideName || '',
             guideCommissionRate,
             guideCommissionAmount,
             items: orderItems,
