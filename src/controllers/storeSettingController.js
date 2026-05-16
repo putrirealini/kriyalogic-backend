@@ -1,23 +1,39 @@
 const StoreSetting = require('../models/StoreSetting');
 
+const createDefaultStoreSetting = (updatedBy = null) => ({
+  shopNameOnReceipt: '',
+  slogan: '',
+  storeAddress: '',
+  footerGreeting: '',
+  returnPolicyText: '',
+  whatsappNumber: '',
+  instagramUsername: '',
+  isTaxed: false,
+  logo: '',
+  updatedBy
+});
+
+const buildReceiptDetail = (storeSetting) => ({
+  shopNameOnReceipt: storeSetting.shopNameOnReceipt || '',
+  slogan: storeSetting.slogan || '',
+  storeAddress: storeSetting.storeAddress || '',
+  footerGreeting: storeSetting.footerGreeting || '',
+  returnPolicyText: storeSetting.returnPolicyText || '',
+  whatsappNumber: storeSetting.whatsappNumber || '',
+  instagramUsername: storeSetting.instagramUsername || '',
+  isTaxed: Boolean(storeSetting.isTaxed),
+  logo: storeSetting.logo || ''
+});
+
 exports.getStoreSetting = async (req, res) => {
   try {
     let storeSetting = await StoreSetting.findOne()
       .populate('updatedBy', 'username email role');
 
     if (!storeSetting) {
-      storeSetting = await StoreSetting.create({
-        shopNameOnReceipt: '',
-        slogan: '',
-        storeAddress: '',
-        footerGreeting: '',
-        returnPolicyText: '',
-        whatsappNumber: '',
-        instagramUsername: '',
-        isTaxed: false,
-        logo: '',
-        updatedBy: req.user?._id || null
-      });
+      storeSetting = await StoreSetting.create(
+        createDefaultStoreSetting(req.user?._id || null)
+      );
 
       storeSetting = await StoreSetting.findById(storeSetting._id)
         .populate('updatedBy', 'username email role');
@@ -27,6 +43,31 @@ exports.getStoreSetting = async (req, res) => {
       success: true,
       message: 'Store setting fetched successfully',
       data: storeSetting
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      error: error.message
+    });
+  }
+};
+
+exports.getReceiptDetail = async (req, res) => {
+  try {
+    let storeSetting = await StoreSetting.findOne();
+
+    if (!storeSetting) {
+      storeSetting = await StoreSetting.create(
+        createDefaultStoreSetting(req.user?._id || null)
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Receipt detail fetched successfully',
+      data: buildReceiptDetail(storeSetting)
     });
   } catch (error) {
     console.error(error);

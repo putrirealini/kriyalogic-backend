@@ -252,6 +252,7 @@ exports.getParentProductDetail = async (req, res) => {
           }
         : null,
       createdAt: item.createdAt,
+      sellingPrice: item.sellingPrice,
       soldAt: item.soldAt || null
     }));
 
