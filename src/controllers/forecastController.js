@@ -6,6 +6,173 @@ const MasterProduct = require('../models/MasterProduct');
 const ProductItem = require('../models/ProductItem');
 const asyncHandler = require('../middleware/asyncHandler');
 
+const AVAILABLE_MONTHS_CACHE_TTL_MS = 5 * 60 * 1000;
+const MASTER_PRODUCT_CACHE_TTL_MS = 5 * 60 * 1000;
+const FORECAST_SUMMARY_CACHE_TTL_MS = 60 * 1000;
+
+const forecastCache = {
+  availableMonths: {
+    expiresAt: 0,
+    data: []
+  },
+  productLookup: {
+    expiresAt: 0,
+    map: new Map(),
+    products: []
+  },
+  summaries: new Map()
+};
+
+const getAvailableMonths = async () => {
+  const now = Date.now();
+
+  if (forecastCache.availableMonths.expiresAt > now) {
+    return forecastCache.availableMonths.data;
+  }
+
+  const availableMonths = await ForecastResult.aggregate([
+    {
+      $match: {
+        forecast_date: {
+          $type: 'date'
+        }
+      }
+    },
+    {
+      $group: {
+        _id: {
+          year: {
+            $year: '$forecast_date'
+          },
+          month: {
+            $month: '$forecast_date'
+          }
+        },
+        total_records: {
+          $sum: 1
+        },
+        first_date: {
+          $min: '$forecast_date'
+        },
+        last_date: {
+          $max: '$forecast_date'
+        }
+      }
+    },
+    {
+      $sort: {
+        '_id.year': 1,
+        '_id.month': 1
+      }
+    }
+  ]);
+
+  forecastCache.availableMonths = {
+    expiresAt: now + AVAILABLE_MONTHS_CACHE_TTL_MS,
+    data: availableMonths
+  };
+
+  return availableMonths;
+};
+
+const getMasterProductLookup = async () => {
+  const now = Date.now();
+
+  if (forecastCache.productLookup.expiresAt > now) {
+    return forecastCache.productLookup;
+  }
+
+  const products = await MasterProduct.find({})
+    .select('parentCode productName slug')
+    .lean();
+
+  const map = new Map();
+
+  products.forEach((product) => {
+    if (product.parentCode) {
+      map.set(product.parentCode, product);
+    }
+
+    if (product.productName) {
+      map.set(product.productName, product);
+      map.set(product.productName.replace(/\s+/g, '_'), product);
+    }
+
+    if (product.slug) {
+      map.set(product.slug, product);
+      map.set(product.slug.replace(/-/g, '_'), product);
+    }
+  });
+
+  forecastCache.productLookup = {
+    expiresAt: now + MASTER_PRODUCT_CACHE_TTL_MS,
+    map,
+    products
+  };
+
+  return forecastCache.productLookup;
+};
+
+const getForecastSummary = async (cacheKey, forecastDateMatchStage) => {
+  const now = Date.now();
+  const cached = forecastCache.summaries.get(cacheKey);
+
+  if (cached && cached.expiresAt > now) {
+    return cached.data;
+  }
+
+  const forecasts = await ForecastResult.aggregate([
+    forecastDateMatchStage,
+    {
+      $group: {
+        _id: '$product_code',
+
+        predicted_stock: {
+          $sum: {
+            $ifNull: ['$predicted_quantity', 0]
+          }
+        },
+
+        lower_bound_estimate: {
+          $sum: {
+            $ifNull: ['$lower_bound_estimate', 0]
+          }
+        },
+
+        upper_bound_estimate: {
+          $sum: {
+            $ifNull: ['$upper_bound_estimate', 0]
+          }
+        },
+
+        total_forecast_days: {
+          $sum: 1
+        },
+
+        first_forecast_date: {
+          $min: '$forecast_date'
+        },
+
+        last_forecast_date: {
+          $max: '$forecast_date'
+        }
+      }
+    },
+    {
+      $sort: {
+        _id: 1
+      }
+    }
+  ]);
+
+  forecastCache.summaries.set(cacheKey, {
+    expiresAt: now + FORECAST_SUMMARY_CACHE_TTL_MS,
+    data: forecasts
+  });
+
+  return forecasts;
+};
+
 /**
  * @desc    Get forecast data by parent code or product name
  * @route   GET /api/forecast/:identifier
@@ -165,118 +332,34 @@ const getForecastData = asyncHandler(async (req, res) => {
 
     console.log('Fetching forecast data for period:', period);
 
-    const basePipeline = [
-      {
-        $addFields: {
-          forecast_date_parsed: {
-            $convert: {
-              input: '$forecast_date',
-              to: 'date',
-              onError: null,
-              onNull: null
-            }
-          }
-        }
-      },
-      {
-        $match: {
-          forecast_date_parsed: {
-            $ne: null
-          }
+    const validForecastDateStage = {
+      $match: {
+        forecast_date: {
+          $type: 'date'
         }
       }
-    ];
+    };
 
-    const dateMatchStage =
+    const forecastDateMatchStage =
       hasMonthFilter && hasYearFilter
-        ? [
-            {
-              $match: {
-                forecast_date_parsed: {
-                  $gte: startDate,
-                  $lt: endDate
-                }
+        ? {
+            $match: {
+              forecast_date: {
+                $gte: startDate,
+                $lt: endDate
               }
             }
-          ]
-        : [];
-
-    const availableMonths = await ForecastResult.aggregate([
-      ...basePipeline,
-      {
-        $group: {
-          _id: {
-            year: {
-              $year: '$forecast_date_parsed'
-            },
-            month: {
-              $month: '$forecast_date_parsed'
-            }
-          },
-          total_records: {
-            $sum: 1
-          },
-          first_date: {
-            $min: '$forecast_date_parsed'
-          },
-          last_date: {
-            $max: '$forecast_date_parsed'
           }
-        }
-      },
-      {
-        $sort: {
-          '_id.year': 1,
-          '_id.month': 1
-        }
-      }
-    ]);
+        : validForecastDateStage;
 
-    console.log('Available forecast months:', availableMonths);
+    const forecastSummaryCacheKey =
+      hasMonthFilter && hasYearFilter
+        ? `${startDate.toISOString()}:${endDate.toISOString()}`
+        : 'all';
 
-    const forecasts = await ForecastResult.aggregate([
-      ...basePipeline,
-      ...dateMatchStage,
-      {
-        $group: {
-          _id: '$product_code',
-
-          predicted_stock: {
-            $sum: {
-              $ifNull: ['$predicted_quantity', 0]
-            }
-          },
-
-          lower_bound_estimate: {
-            $sum: {
-              $ifNull: ['$lower_bound_estimate', 0]
-            }
-          },
-
-          upper_bound_estimate: {
-            $sum: {
-              $ifNull: ['$upper_bound_estimate', 0]
-            }
-          },
-
-          total_forecast_days: {
-            $sum: 1
-          },
-
-          first_forecast_date: {
-            $min: '$forecast_date_parsed'
-          },
-
-          last_forecast_date: {
-            $max: '$forecast_date_parsed'
-          }
-        }
-      },
-      {
-        $sort: {
-          _id: 1
-        }
-      }
+    const [availableMonths, forecasts] = await Promise.all([
+      getAvailableMonths(),
+      getForecastSummary(forecastSummaryCacheKey, forecastDateMatchStage)
     ]);
 
     console.log(
@@ -297,62 +380,14 @@ const getForecastData = asyncHandler(async (req, res) => {
       });
     }
 
-    const productIdentifiers = forecasts
-      .map((forecast) => forecast._id)
-      .filter(Boolean);
-
-    const normalizedProductNames = productIdentifiers.map((identifier) =>
-      identifier.replace(/_/g, ' ')
-    );
-
-    const normalizedSlugs = productIdentifiers.map((identifier) =>
-      identifier.toLowerCase().replace(/_/g, '-')
-    );
-
-    const products = await MasterProduct.find({
-      $or: [
-        {
-          parentCode: {
-            $in: productIdentifiers
-          }
-        },
-        {
-          productName: {
-            $in: productIdentifiers
-          }
-        },
-        {
-          productName: {
-            $in: normalizedProductNames
-          }
-        },
-        {
-          slug: {
-            $in: normalizedSlugs
-          }
-        }
-      ]
-    }).select('parentCode productName slug');
-
-    const productMap = new Map();
-
-    products.forEach((product) => {
-      if (product.parentCode) {
-        productMap.set(product.parentCode, product);
-      }
-
-      if (product.productName) {
-        productMap.set(product.productName, product);
-        productMap.set(product.productName.replace(/\s+/g, '_'), product);
-      }
-
-      if (product.slug) {
-        productMap.set(product.slug, product);
-        productMap.set(product.slug.replace(/-/g, '_'), product);
-      }
-    });
-
-    const productIds = products.map((product) => product._id);
+    const { map: productMap } = await getMasterProductLookup();
+    const productIds = [
+      ...new Set(
+        forecasts
+          .map((forecast) => productMap.get(forecast._id)?._id?.toString())
+          .filter(Boolean)
+      )
+    ].map((id) => new mongoose.Types.ObjectId(id));
 
     let stockCounts = [];
 

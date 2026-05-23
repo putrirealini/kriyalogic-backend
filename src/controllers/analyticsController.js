@@ -50,152 +50,161 @@ const getAnalyticsSummary = async (req, res) => {
       });
     }
 
-    const [totals] = await PosOrder.aggregate([
-      { $match: match },
-      {
-        $addFields: {
-          itemCostTotal: {
-            $sum: {
-              $map: {
-                input: { $ifNull: ['$items', []] },
-                as: 'item',
-                in: {
-                  $multiply: [
-                    { $ifNull: ['$$item.costPrice', 0] },
-                    { $ifNull: ['$$item.qty', 1] }
-                  ]
+    const [
+      totalsResult,
+      topSellingProducts,
+      topPerformingTourGuides,
+      topPerformingArtisans
+    ] = await Promise.all([
+      PosOrder.aggregate([
+        { $match: match },
+        {
+          $addFields: {
+            itemCostTotal: {
+              $sum: {
+                $map: {
+                  input: { $ifNull: ['$items', []] },
+                  as: 'item',
+                  in: {
+                    $multiply: [
+                      { $ifNull: ['$$item.costPrice', 0] },
+                      { $ifNull: ['$$item.qty', 1] }
+                    ]
+                  }
+                }
+              }
+            },
+            artisanCommissionTotal: {
+              $sum: {
+                $map: {
+                  input: { $ifNull: ['$items', []] },
+                  as: 'item',
+                  in: { $ifNull: ['$$item.artisanCommissionAmount', 0] }
+                }
+              }
+            },
+            quantityTotal: {
+              $sum: {
+                $map: {
+                  input: { $ifNull: ['$items', []] },
+                  as: 'item',
+                  in: { $ifNull: ['$$item.qty', 0] }
                 }
               }
             }
-          },
-          artisanCommissionTotal: {
-            $sum: {
-              $map: {
-                input: { $ifNull: ['$items', []] },
-                as: 'item',
-                in: { $ifNull: ['$$item.artisanCommissionAmount', 0] }
-              }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalQuantity: { $sum: '$quantityTotal' },
+            totalRevenue: { $sum: { $ifNull: ['$subtotal', 0] } },
+            totalCostPrice: { $sum: '$itemCostTotal' },
+            totalArtisanCommission: { $sum: '$artisanCommissionTotal' },
+            totalGuideCommission: { $sum: { $ifNull: ['$guideCommissionAmount', 0] } },
+            deliveryProfit: { $sum: { $ifNull: ['$delivery.storeProfit', 0] } }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            totalQuantity: 1,
+            totalRevenue: 1,
+            totalCommissionExpenses: {
+              $add: ['$totalArtisanCommission', '$totalGuideCommission']
+            },
+            netProfit: {
+              $subtract: [
+                '$totalRevenue',
+                {
+                  $add: [
+                    '$totalCostPrice',
+                    '$totalArtisanCommission',
+                    '$totalGuideCommission'
+                  ]
+                }
+              ]
+            },
+            deliveryProfit: 1
+          }
+        }
+      ]),
+
+      PosOrder.aggregate([
+        { $match: match },
+        { $unwind: '$items' },
+        {
+          $group: {
+            _id: '$items.itemName',
+            totalQuantity: { $sum: { $ifNull: ['$items.qty', 0] } }
+          }
+        },
+        { $sort: { totalQuantity: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            _id: 0,
+            productName: '$_id',
+            totalQuantity: 1
+          }
+        }
+      ]),
+
+      PosOrder.aggregate([
+        {
+          $match: {
+            ...match,
+            guideName: {
+              $nin: ['', null]
             }
-          },
-          quantityTotal: {
-            $sum: {
-              $map: {
-                input: { $ifNull: ['$items', []] },
-                as: 'item',
-                in: { $ifNull: ['$$item.qty', 0] }
-              }
+          }
+        },
+        {
+          $group: {
+            _id: '$guideName',
+            totalSales: { $sum: { $ifNull: ['$subtotal', 0] } }
+          }
+        },
+        { $sort: { totalSales: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            _id: 0,
+            tourGuide: '$_id',
+            totalSales: 1
+          }
+        }
+      ]),
+
+      PosOrder.aggregate([
+        { $match: match },
+        { $unwind: '$items' },
+        {
+          $match: {
+            'items.artisanName': {
+              $nin: ['', null]
             }
           }
-        }
-      },
-      {
-        $group: {
-          _id: null,
-          totalQuantity: { $sum: '$quantityTotal' },
-          totalRevenue: { $sum: { $ifNull: ['$subtotal', 0] } },
-          totalCostPrice: { $sum: '$itemCostTotal' },
-          totalArtisanCommission: { $sum: '$artisanCommissionTotal' },
-          totalGuideCommission: { $sum: { $ifNull: ['$guideCommissionAmount', 0] } },
-          deliveryProfit: { $sum: { $ifNull: ['$delivery.storeProfit', 0] } }
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          totalQuantity: 1,
-          totalRevenue: 1,
-          totalCommissionExpenses: {
-            $add: ['$totalArtisanCommission', '$totalGuideCommission']
-          },
-          netProfit: {
-            $subtract: [
-              '$totalRevenue',
-              {
-                $add: [
-                  '$totalCostPrice',
-                  '$totalArtisanCommission',
-                  '$totalGuideCommission'
-                ]
-              }
-            ]
-          },
-          deliveryProfit: 1
-        }
-      }
-    ]);
-
-    const topSellingProducts = await PosOrder.aggregate([
-      { $match: match },
-      { $unwind: '$items' },
-      {
-        $group: {
-          _id: '$items.itemName',
-          totalQuantity: { $sum: { $ifNull: ['$items.qty', 0] } }
-        }
-      },
-      { $sort: { totalQuantity: -1 } },
-      { $limit: 5 },
-      {
-        $project: {
-          _id: 0,
-          productName: '$_id',
-          totalQuantity: 1
-        }
-      }
-    ]);
-
-    const topPerformingTourGuides = await PosOrder.aggregate([
-      {
-        $match: {
-          ...match,
-          guideName: {
-            $nin: ['', null]
+        },
+        {
+          $group: {
+            _id: '$items.artisanName',
+            totalQuantity: { $sum: { $ifNull: ['$items.qty', 0] } }
+          }
+        },
+        { $sort: { totalQuantity: -1 } },
+        { $limit: 5 },
+        {
+          $project: {
+            _id: 0,
+            artisanName: '$_id',
+            totalQuantity: 1
           }
         }
-      },
-      {
-        $group: {
-          _id: '$guideName',
-          totalSales: { $sum: { $ifNull: ['$subtotal', 0] } }
-        }
-      },
-      { $sort: { totalSales: -1 } },
-      { $limit: 5 },
-      {
-        $project: {
-          _id: 0,
-          tourGuide: '$_id',
-          totalSales: 1
-        }
-      }
+      ])
     ]);
 
-    const topPerformingArtisans = await PosOrder.aggregate([
-      { $match: match },
-      { $unwind: '$items' },
-      {
-        $match: {
-          'items.artisanName': {
-            $nin: ['', null]
-          }
-        }
-      },
-      {
-        $group: {
-          _id: '$items.artisanName',
-          totalQuantity: { $sum: { $ifNull: ['$items.qty', 0] } }
-        }
-      },
-      { $sort: { totalQuantity: -1 } },
-      { $limit: 5 },
-      {
-        $project: {
-          _id: 0,
-          artisanName: '$_id',
-          totalQuantity: 1
-        }
-      }
-    ]);
+    const [totals] = totalsResult;
 
     const summary = {
       totalQuantity: totals?.totalQuantity || 0,

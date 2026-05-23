@@ -28,26 +28,64 @@ const generateUniqueSlug = async (categoryName, productName, excludeId = null) =
 
 exports.getParentProducts = async (req, res) => {
   try {
-    const parentProducts = await MasterProduct.find().sort({ createdAt: -1 });
+    const parentProducts = await MasterProduct.find()
+      .sort({ createdAt: -1 })
+      .lean();
 
-    const parentProductsWithCounts = await Promise.all(
-      parentProducts.map(async (parent) => {
-        const totalChildItems = await ProductItem.countDocuments({
-          masterProductId: parent._id
-        });
+    const parentIds = parentProducts.map((parent) => parent._id);
 
-        const availableStock = await ProductItem.countDocuments({
-          masterProductId: parent._id,
-          status: 'available'
-        });
+    const childCounts = parentIds.length > 0
+      ? await ProductItem.aggregate([
+          {
+            $match: {
+              masterProductId: {
+                $in: parentIds
+              }
+            }
+          },
+          {
+            $group: {
+              _id: '$masterProductId',
+              totalChildItems: {
+                $sum: 1
+              },
+              availableStock: {
+                $sum: {
+                  $cond: [
+                    {
+                      $eq: ['$status', 'available']
+                    },
+                    1,
+                    0
+                  ]
+                }
+              }
+            }
+          }
+        ])
+      : [];
 
-        return {
-          ...parent.toObject(),
-          totalChildItems,
-          availableStock
-        };
-      })
+    const countMap = new Map(
+      childCounts.map((count) => [
+        count._id.toString(),
+        {
+          totalChildItems: count.totalChildItems,
+          availableStock: count.availableStock
+        }
+      ])
     );
+
+    const parentProductsWithCounts = parentProducts.map((parent) => {
+      const counts = countMap.get(parent._id.toString()) || {
+        totalChildItems: 0,
+        availableStock: 0
+      };
+
+      return {
+        ...parent,
+        ...counts
+      };
+    });
 
     return res.status(200).json({
       success: true,

@@ -62,4 +62,7 @@ const masterProductSchema = new mongoose.Schema(
   }
 );
 
+masterProductSchema.index({ createdAt: -1 });
+masterProductSchema.index({ status: 1, productName: 1 });
+
 module.exports = mongoose.model('MasterProduct', masterProductSchema);

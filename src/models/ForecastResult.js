@@ -35,5 +35,6 @@ const forecastResultSchema = new mongoose.Schema(
 
 // Compound index for efficient queries
 forecastResultSchema.index({ product_code: 1, forecast_date: 1 });
+forecastResultSchema.index({ forecast_date: 1, product_code: 1 });
 
 module.exports = mongoose.model('ForecastResult', forecastResultSchema);
